@@ -1,4 +1,4 @@
-# Prime coding challenge #2
+# Sudoku Validator
 **An excercise for Prime Subscribers. Visit http://learn.thoughtbot.com/prime to
 learn more.**
 
@@ -36,7 +36,7 @@ A sudoku is valid if:
 * it has no duplicates in a sub-grid
 
 ## Input files
-The input files would look like this
+The input files look like this
 
 ```
 8 5 . |. . 2 |4 . . 
