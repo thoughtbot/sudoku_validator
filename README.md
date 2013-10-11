@@ -36,7 +36,7 @@ A sudoku is valid if:
 * it has no duplicates in a sub-grid
 
 ## Input files
-The input files would look like this (dashes represent unfilled squares):
+The input files would look like this
 
 ```
 8 5 . |. . 2 |4 . . 
