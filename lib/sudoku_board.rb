@@ -1,6 +1,7 @@
 class SudokuBoard
   #attr_accessor :row
   #attr_reader :col, []
+  attr_reader :board
 
   def initialize(game_file)
     @board = []
