@@ -5,6 +5,12 @@ describe SudokuValidator do
   before do
 
   end
+  describe "valid games" do
+    it "correctly recognizes a valid, complete game" do
+      result = %x{"./sudoku_validator" "./valid_complete.sudoku"}
+      expect(result).to eq "This sudoku is valid.\n"
+    end
+  end
 end
 describe SudokuBoard do
   describe "complete games" do
