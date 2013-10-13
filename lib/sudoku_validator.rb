@@ -9,12 +9,16 @@ class SudokuValidator
   def analyze
     @game = SudokuBoard.new @game_file
     status = check_game_status
-    validity = 'valid'
+    validity = check_game_validity
     [validity, status]
   end
 
   def check_game_status
     self.missing_data? ?  'incomplete' : 'complete'
+  end
+
+  def check_game_validity
+    'valid'
   end
 
   def missing_data?
