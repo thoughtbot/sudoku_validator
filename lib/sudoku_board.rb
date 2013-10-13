@@ -33,8 +33,7 @@ class SudokuBoard
         s_grid << self[row,col]
         col += 1
       end
-      row += 1
-      col -= 3
+      row += 1; col -= 3
     end
     s_grid
   end

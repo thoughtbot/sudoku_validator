@@ -5,8 +5,9 @@ describe SudokuValidator do
   before do
 
   end
-  describe SudokuBoard do
-
+end
+describe SudokuBoard do
+  describe "complete games" do
     before do
       @game = SudokuBoard.new("valid_complete.sudoku")
     end
@@ -28,22 +29,22 @@ describe SudokuValidator do
     it "returns a middle 3x3 sub-grid" do
       expect(@game.sub_grid(5)).to eql [1,4,7,2,6,8,5,9,3]
     end
-    describe "SudokuBoard for incomplete games" do
-      before do
-        @game = SudokuBoard.new("invalid_incomplete.sudoku")
-      end
-      it "returns zero for an empty position" do
-        expect(@game[2,4]).to eql 0 
-      end
-      it "returns the expected row" do
-        expect(@game.row(4)).to eql [0,0,0,1,0,7,0,0,2]
-      end
-      it "returns the expected column" do
-        expect(@game.col(8)).to eql [0,0,0,0,0,0,7,0,4]
-      end
-      it "returns the expected sub-grid" do
-        expect(@game.sub_grid(8)).to eql [0,8,0,0,0,0,0,3,6]
-      end
+  end
+  describe "incomplete games" do
+    before do
+      @game = SudokuBoard.new("invalid_incomplete.sudoku")
+    end
+    it "returns zero for an empty position" do
+      expect(@game[2,4]).to eql 0 
+    end
+    it "returns the expected row" do
+      expect(@game.row(4)).to eql [0,0,0,1,0,7,0,0,2]
+    end
+    it "returns the expected column" do
+      expect(@game.col(8)).to eql [0,0,0,0,0,0,7,0,4]
+    end
+    it "returns the expected sub-grid" do
+      expect(@game.sub_grid(8)).to eql [0,8,0,0,0,0,0,3,6]
     end
   end
 end
