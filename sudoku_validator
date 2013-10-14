@@ -8,3 +8,4 @@ output = "This sudoku is #{validity}"
 output += ", and #{status}"
 output += "."
 puts output
+@validator.errors.each { |err| puts err }
