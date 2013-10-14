@@ -26,8 +26,8 @@ describe SudokuValidator do
       @game = SudokuValidator.new "./invalid_complete.sudoku"
       @element = [1,2,3,2,5,6,7,8,9]
     end
-    it "identifies correct element in #report_errors" do
-      expect(@game.report_errors @element).to eql [2]
+    it "identifies correct element in #identify_errors" do
+      expect(@game.identify_errors @element).to eql [2]
     end
     it "returns errors in #valid?" do
       expect(@game.valid?(@element)).to eq [false, [2]]

@@ -64,11 +64,11 @@ class SudokuValidator
     tmp = ary.map { |e| e if e !=0}.compact
     valid = tmp.uniq.size == tmp.size
     error = []
-    error = report_errors(ary) if !valid
+    error = identify_errors(ary) if !valid
     [valid,error]
   end
 
-  def report_errors (ary)
+  def identify_errors (ary)
     tmp = ary
     error = []
     while tmp.size > 0 do
