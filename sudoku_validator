@@ -5,6 +5,6 @@ require_relative 'lib/sudoku_validator'
 validity, status = @validator.analyze
 output = ""
 output = "This sudoku is #{validity}"
-output += ", but incomplete" if status == 'incomplete'
+output += ", and #{status}"
 output += "."
 puts output

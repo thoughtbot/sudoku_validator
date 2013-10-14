@@ -8,11 +8,17 @@ describe SudokuValidator do
   describe "valid games" do
     it "correctly recognizes a valid, complete game" do
       result = %x{"./sudoku_validator" "./valid_complete.sudoku"}
-      expect(result).to eq "This sudoku is valid.\n"
+      expect(result).to eq "This sudoku is valid, and complete.\n"
     end
     it "recognizes a valid, incomplete game" do
       result = `./sudoku_validator ./valid_incomplete.sudoku`
-      expect(result).to eq "This sudoku is valid, but incomplete.\n"
+      expect(result).to eq "This sudoku is valid, and incomplete.\n"
+    end
+  end
+  describe "invalid games" do
+    it "recognizes an invalid, complete game" do
+      result = `./sudoku_validator ./invalid_complete.sudoku`
+      expect(result).to eq "This sudoku is invalid, and complete.\n"
     end
   end
 end
@@ -38,6 +44,9 @@ describe SudokuBoard do
     end
     it "returns a middle 3x3 sub-grid" do
       expect(@game.sub_grid(5)).to eql [1,4,7,2,6,8,5,9,3]
+    end
+    it "successfully returns the last sub-grid" do
+     expect(@game.sub_grid(9)).to eql [6,7,5,8,9,3,2,4,1] 
     end
   end
   describe "incomplete games" do
