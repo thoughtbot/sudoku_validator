@@ -45,7 +45,8 @@ class SudokuValidator
     (1..9).each do |col|
       valid,error = valid?(@game.col(col))
       cols_valid &&= valid
-      error.each { |e| @errors << "#{e} is repeated in col #{col}" }
+      #error.each { |e| @errors << "#{e} is repeated in col #{col}" }
+      report_errors(error,'col',col)
     end
     cols_valid
   end
@@ -55,7 +56,8 @@ class SudokuValidator
     (1..9).each do |subgrid|
       valid,error = valid?(@game.sub_grid(subgrid))
       subgrids_valid &&= valid
-      error.each { |e| @errors << "#{e} is repeated is subgrid #{subgrid}" }
+      report_errors(error,'sub-grid',subgrid)
+      #error.each { |e| @errors << "#{e} is repeated in sub-grid #{subgrid}" }
     end
     subgrids_valid
   end
@@ -69,12 +71,16 @@ class SudokuValidator
   end
 
   def identify_errors (ary)
-    tmp = ary
+    tmp = ary.clone
     error = []
     while tmp.size > 0 do
       item = tmp.shift
       error << item if tmp.include? item
     end
     error
+  end
+
+  def report_errors (ary,where,item)
+    ary.each { |e| @errors << "#{e} is repeated in #{where} #{item}" }
   end
 end

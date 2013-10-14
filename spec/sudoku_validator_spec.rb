@@ -36,9 +36,19 @@ describe SudokuValidator do
       @element[3]=4
       expect(@game.valid?(@element)).to eq [true, []]
     end
-    it "returns the descriptive error string" do
+    it "returns the descriptive error string for col errors" do
       @game.analyze
       @game.errors.should include "2 is repeated in col 6"
+    end
+    it "returns the descriptive error string for row errors" do
+      @game.game.board[0][0] = 7
+      @game.analyze
+      @game.errors.should include "7 is repeated in row 1"
+    end
+    it "returns the descrptive error string for sub-grid errors" do
+      @game.game.board[0][0] = 7
+      @game.analyze
+      @game.errors.should include "7 is repeated in sub-grid 1"
     end
   end
 end
@@ -67,6 +77,9 @@ describe SudokuBoard do
     end
     it "successfully returns the last sub-grid" do
      expect(@game.sub_grid(9)).to eql [6,7,5,8,9,3,2,4,1] 
+    end
+    it "successfully returns the first sub-grid" do
+      expect(@game.sub_grid(1)).to eql [8,5,9,7,2,3,1,6,4]
     end
   end
   describe "incomplete games" do
