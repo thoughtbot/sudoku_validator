@@ -48,7 +48,7 @@ describe SudokuValidator do
     it "returns the descrptive error string for sub-grid errors" do
       @game.game.board[0][0] = 7
       @game.analyze
-      @game.errors.should include "7 is repeated in sub-grid 1"
+      @game.errors.should include "7 is repeated in sub_grid 1"
     end
   end
 end

@@ -31,33 +31,25 @@ class SudokuValidator
   end
 
   def check_row_validity
-    rows_valid = true
-    (1..9).each do |row|
-      valid,error = valid?(@game.row(row))
-      rows_valid &&= valid
-      report_errors(error, 'row',row)
-    end
-    rows_valid
+    valid_element?('row')
   end
 
   def check_col_validity
-    cols_valid = true
-    (1..9).each do |col|
-      valid,error = valid?(@game.col(col))
-      cols_valid &&= valid
-      report_errors(error,'col',col)
-    end
-    cols_valid
+    valid_element?('col')
   end
   
   def check_subgrid_validity
-    subgrids_valid = true
-    (1..9).each do |subgrid|
-      valid,error = valid?(@game.sub_grid(subgrid))
-      subgrids_valid &&= valid
-      report_errors(error,'sub-grid',subgrid)
+    valid_element?('sub_grid')
+  end
+
+  def valid_element?(element)
+    item_valid = true
+    (1..9).each do |item|
+      valid, error = valid?(@game.__send__(element.to_sym,item))
+      item_valid &&= valid
+      report_errors(error, element.to_s, item)
     end
-    subgrids_valid
+    item_valid
   end
 
   def valid?(ary)
