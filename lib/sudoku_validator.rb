@@ -47,7 +47,7 @@ class SudokuValidator
     (1..9).each do |item|
       valid, error = valid?(@game.__send__(element.to_sym,item))
       item_valid &&= valid
-      report_errors(error, element.to_s, item)
+      report_errors(error, element, item)
     end
     item_valid
   end

@@ -18,7 +18,7 @@ describe SudokuValidator do
   describe "invalid games" do
     it "recognizes an invalid, complete game" do
       result = `./sudoku_validator ./invalid_complete.sudoku`
-      expect(result).to eq "This sudoku is invalid, and complete.\n"
+      expect(result).to include "This sudoku is invalid, and complete.\n"
     end
   end
   describe "error handling" do
