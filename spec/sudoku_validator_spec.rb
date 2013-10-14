@@ -51,6 +51,12 @@ describe SudokuValidator do
       @game.analyze
       @game.errors.should include "7 is repeated in sub_grid 1"
     end
+    it "ignores missing (zero) elements for incomplete sudokus" do
+      @game.game.board[0][0] = 0 ; @game.game.board[0][6] = 0
+      @game.game.board[0][3] = 0
+      @game.analyze
+      @game.errors.should_not include "0 is repeated in row 1"
+    end
   end
 end
 describe SudokuBoard do

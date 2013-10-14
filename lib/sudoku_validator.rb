@@ -56,7 +56,7 @@ class SudokuValidator
     tmp = ary.map { |e| e if e !=0}.compact
     valid = tmp.uniq.size == tmp.size
     error = []
-    error = identify_errors(ary) if !valid
+    error = identify_errors(tmp) if !valid
     [valid,error]
   end
 
