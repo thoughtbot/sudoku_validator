@@ -21,6 +21,26 @@ describe SudokuValidator do
       expect(result).to eq "This sudoku is invalid, and complete.\n"
     end
   end
+  describe "error handling" do
+    before do
+      @game = SudokuValidator.new "./invalid_complete.sudoku"
+      @element = [1,2,3,2,5,6,7,8,9]
+    end
+    it "identifies correct element in #report_errors" do
+      expect(@game.report_errors @element).to eql [2]
+    end
+    it "returns errors in #valid?" do
+      expect(@game.valid?(@element)).to eq [false, [2]]
+    end
+    it "returns empty error array in #vaid? if no errors" do
+      @element[3]=4
+      expect(@game.valid?(@element)).to eq [true, []]
+    end
+    it "returns the descriptive error string" do
+      @game.analyze
+      @game.errors.should include "2 is repeated in col 6"
+    end
+  end
 end
 describe SudokuBoard do
   describe "complete games" do

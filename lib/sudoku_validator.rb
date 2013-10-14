@@ -1,13 +1,15 @@
 require_relative './sudoku_board'
 
 class SudokuValidator
-  attr_reader :game
+  attr_reader :game, :errors
+
   def initialize(game_file)
     @game_file = game_file
+    @game = SudokuBoard.new @game_file
+    @errors = []
   end
 
   def analyze
-    @game = SudokuBoard.new @game_file
     status = check_game_status
     validity = check_game_validity
     [validity, status]
@@ -25,13 +27,15 @@ class SudokuValidator
   end
 
   def missing_data?
-    !(game.board.flatten.index( 0 )).nil?
+    !(@game.board.flatten.index( 0 )).nil?
   end
 
   def check_row_validity
     rows_valid = true
     (1..9).each do |row|
-      rows_valid &&= valid?(@game.row(row))
+      valid,error = valid?(@game.row(row))
+      rows_valid &&= valid
+      error.each { |e| @errors << "#{e} is repeated in row #{row}" }
     end
     rows_valid
   end
@@ -39,7 +43,9 @@ class SudokuValidator
   def check_col_validity
     cols_valid = true
     (1..9).each do |col|
-      cols_valid &&= valid?(@game.col(col))
+      valid,error = valid?(@game.col(col))
+      cols_valid &&= valid
+      error.each { |e| @errors << "#{e} is repeated in col #{col}" }
     end
     cols_valid
   end
@@ -47,13 +53,28 @@ class SudokuValidator
   def check_subgrid_validity
     subgrids_valid = true
     (1..9).each do |subgrid|
-      subgrids_valid &&= valid?(@game.sub_grid(subgrid))
+      valid,error = valid?(@game.sub_grid(subgrid))
+      subgrids_valid &&= valid
+      error.each { |e| @errors << "#{e} is repeated is subgrid #{subgrid}" }
     end
     subgrids_valid
   end
 
   def valid?(ary)
     tmp = ary.map { |e| e if e !=0}.compact
-    tmp.uniq.size == tmp.size
+    valid = tmp.uniq.size == tmp.size
+    error = []
+    error = report_errors(ary) if !valid
+    [valid,error]
+  end
+
+  def report_errors (ary)
+    tmp = ary
+    error = []
+    while tmp.size > 0 do
+      item = tmp.shift
+      error << item if tmp.include? item
+    end
+    error
   end
 end

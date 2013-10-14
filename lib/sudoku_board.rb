@@ -41,14 +41,16 @@ class SudokuBoard
     end
     s_grid
   end
+
   def convert_line_to_row(line)
-    row = []
     line.chomp!.delete!('-+| ')
     return nil if line.empty?
     line.tr!('.','0')
+    row = []
     line.each_char.map { |c| row << c.to_i }
     row
   end
+
   def sub_grid_start(sub_grid)
     row = ((sub_grid-1)/3)*3 + 1
     col = ((sub_grid-1)%3)*3 + 1
