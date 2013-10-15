@@ -2,6 +2,10 @@ require_relative '../lib/sudoku_validator'
 require_relative '../lib/sudoku_reader.rb'
 
 describe SudokuValidator do
+  before do
+    allow(reader).to receive(:grid).and_return(grid)
+  end
+
   shared_examples "a complete sudoku" do
     describe "#complete?" do
       context "when the sudoku is complete" do
@@ -46,14 +50,9 @@ describe SudokuValidator do
     it_behaves_like "a complete sudoku"
     it_behaves_like "a valid sudoku"
 
-    before do
-      grid = [[1,2],
-              [2,1]]
-      allow(reader).to receive(:grid).and_return(grid)
-    end
-
-    def reader
-      @reader ||= SudokuReader.new('valid_complete.sudoku')
+    def grid
+      [[1,2],
+       [2,1]]
     end
   end
 
@@ -61,14 +60,9 @@ describe SudokuValidator do
     it_behaves_like "a incomplete sudoku"
     it_behaves_like "a valid sudoku"
 
-    before do
-      grid = [[1,2],
-              [2,0]]
-      allow(reader).to receive(:grid).and_return(grid)
-    end
-
-    def reader
-      @reader ||= SudokuReader.new('valid_incomplete.sudoku')
+    def grid
+      [[1,2],
+       [2,0]]
     end
   end
 
@@ -76,14 +70,9 @@ describe SudokuValidator do
     it_behaves_like "a complete sudoku"
     it_behaves_like "a invalid sudoku"
 
-    before do
-      grid = [[1,1],
-              [2,3]]
-      allow(reader).to receive(:grid).and_return(grid)
-    end
-
-    def reader
-      @reader ||= SudokuReader.new('invalid_incomplete.sudoku')
+    def grid
+      [[1,1],
+       [2,3]]
     end
   end
 
@@ -91,18 +80,17 @@ describe SudokuValidator do
     it_behaves_like "a incomplete sudoku"
     it_behaves_like "a invalid sudoku"
 
-    before do
-      grid = [[1,1],
-              [2,0]]
-      allow(reader).to receive(:grid).and_return(grid)
-    end
-
-    def reader
-      @reader ||= SudokuReader.new('invalid_incomplete.sudoku')
+    def grid
+      [[1,1],
+       [2,0]]
     end
   end
 
   def validator
     @validator ||= SudokuValidator.new(reader)
+  end
+
+  def reader
+    @reader ||= SudokuReader.new('a_path')
   end
 end
