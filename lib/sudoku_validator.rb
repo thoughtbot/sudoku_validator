@@ -4,9 +4,12 @@ class SudokuValidator
   end
 
   def complete?
-    @reader.grid.each do |line|
-      return false if line.include?(0)
-    end
+    @reader.each_line {|line| return false if line.include?(0)}
+    return true
+  end
+
+  def valid?
+    @reader.each_value {|line, value| return false if line.count(value) > 1}
     return true
   end
 end

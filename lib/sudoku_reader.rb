@@ -10,6 +10,14 @@ class SudokuReader
     @grid
   end
 
+  def each_line
+    grid.each {|line| yield(line)}
+  end
+
+  def each_value
+    each_line {|line| line.each{|value| yield(line, value)}}
+  end
+
   private
   def fill_grid_from_file
     @grid = []
