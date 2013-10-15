@@ -86,6 +86,16 @@ describe SudokuValidator do
     end
   end
 
+  describe "invalid columns and complete" do
+    it_behaves_like "a complete sudoku"
+    it_behaves_like "a invalid sudoku"
+
+    def grid
+      [[1,3],
+       [1,2]]
+    end
+  end
+
   def validator
     @validator ||= SudokuValidator.new(reader)
   end
