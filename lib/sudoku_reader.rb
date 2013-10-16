@@ -30,7 +30,13 @@ class SudokuReader
     blocks.each {|block| block.each{|value| yield(block, value)}}
   end
 
-  private
+  def columns
+    return @columns if @columns.any?
+    init_columns
+    each_line {|line| grid_size.times.each {|i| @columns[i] << line[i]}}
+    @columns
+  end
+
   def blocks
     return @blocks if @blocks.any?
     init_blocks
@@ -42,25 +48,18 @@ class SudokuReader
     block_vertical_number = block_horizontal_number = 0
     grid_size.times do |i|
       block_vertical_number += 3 if i%3 == 0
-      columns[i].each_with_index do |value, j|
+      lines[i].each_with_index do |value, j|
         block_horizontal_number += 1 if j%3 == 0
         block_number = (block_horizontal_number - 1 + block_vertical_number - 3)
         @blocks[block_number] << value
       end
-
       block_horizontal_number = 0
     end
   end
 
+  private
   def init_blocks
     grid_size.times { @blocks << [] }
-  end
-
-  def columns
-    return @columns if @columns.any?
-    init_columns
-    each_line {|line| grid_size.times.each {|i| @columns[i] << line[i]}}
-    @columns
   end
 
   def init_columns
