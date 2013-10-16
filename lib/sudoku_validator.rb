@@ -14,7 +14,19 @@ class SudokuValidator
     lines_valid? && columns_valid? && blocks_valid?
   end
 
+  def message
+    if valid?
+      "This sudoku is valid#{complete_message}."
+    else
+      "This sudoku is invalid."
+    end
+  end
+
   private
+  def complete_message
+    ", but incomplete" unless complete?
+  end
+
   def lines_valid?
     check_validity_for(:line)
   end

@@ -44,11 +44,23 @@ describe SudokuValidator do
         end
       end
     end
+
+    describe "#message" do
+      it "say than the sudoku is valid" do
+        expect(validator.message).to eq "This sudoku is invalid."
+      end
+    end
   end
 
   describe "valid and complete sudoku" do
     it_behaves_like "a complete sudoku"
     it_behaves_like "a valid sudoku"
+
+    describe "#message" do
+      it "say than the sudoku is valid" do
+        expect(validator.message).to eq "This sudoku is valid."
+      end
+    end
 
     def reader
       SudokuReader.new('valid_complete.sudoku')
@@ -58,6 +70,12 @@ describe SudokuValidator do
   describe "valid an incomplete sudoku" do
     it_behaves_like "a incomplete sudoku"
     it_behaves_like "a valid sudoku"
+
+    describe "#message" do
+      it "say than the sudoku is valid" do
+        expect(validator.message).to eq "This sudoku is valid, but incomplete."
+      end
+    end
 
     def reader
       SudokuReader.new('valid_incomplete.sudoku')
