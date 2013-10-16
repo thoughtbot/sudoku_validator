@@ -45,15 +45,10 @@ class SudokuReader
   end
 
   def fill_blocks
-    block_vertical_number = block_horizontal_number = 0
-    grid_size.times do |i|
-      block_vertical_number += 3 if i%3 == 0
-      lines[i].each_with_index do |value, j|
-        block_horizontal_number += 1 if j%3 == 0
-        block_number = (block_horizontal_number - 1 + block_vertical_number - 3)
-        @blocks[block_number] << value
+    0.step(6,3) do |k|
+      3.times do |i|
+        3.times {|j| @blocks[k+i] += lines[i*3+j][k..k+2]}
       end
-      block_horizontal_number = 0
     end
   end
 
