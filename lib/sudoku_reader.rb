@@ -55,7 +55,7 @@ class SudokuReader
 
   def convert_line_to_values(line)
     unless separator?(line)
-      @lines << line.split.map { |value| cleaned_value(value) }
+      @lines << line.split.map { |value| sanitize(value) }
     end
   end
 
@@ -63,7 +63,7 @@ class SudokuReader
     line == "------+------+------\n"
   end
 
-  def cleaned_value(value)
+  def sanitize(value)
     value.gsub('|','').to_i
   end
 end
