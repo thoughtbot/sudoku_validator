@@ -4,7 +4,6 @@ class SudokuReader
   def initialize(path)
     @path = path
     @lines = []
-    @columns = []
     @blocks = []
   end
 
@@ -31,10 +30,7 @@ class SudokuReader
   end
 
   def columns
-    return @columns if @columns.any?
-    init_columns
-    each_line {|line| grid_size.times.each {|i| @columns[i] << line[i]}}
-    @columns
+    @columns ||= lines.transpose
   end
 
   def blocks
@@ -55,10 +51,6 @@ class SudokuReader
   private
   def init_blocks
     grid_size.times { @blocks << [] }
-  end
-
-  def init_columns
-    grid_size.times { @columns << [] }
   end
 
   def grid_size
