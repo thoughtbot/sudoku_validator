@@ -3,7 +3,7 @@ require_relative '../lib/sudoku_reader.rb'
 
 describe SudokuValidator do
   before do
-    allow(reader).to receive(:grid).and_return(grid)
+    allow(reader).to receive(:reader).and_return(reader)
   end
 
   shared_examples "a complete sudoku" do
@@ -50,9 +50,8 @@ describe SudokuValidator do
     it_behaves_like "a complete sudoku"
     it_behaves_like "a valid sudoku"
 
-    def grid
-      [[1,2],
-       [2,1]]
+    def reader
+      SudokuReader.new('valid_complete.sudoku')
     end
   end
 
@@ -60,9 +59,26 @@ describe SudokuValidator do
     it_behaves_like "a incomplete sudoku"
     it_behaves_like "a valid sudoku"
 
-    def grid
-      [[1,2],
-       [2,0]]
+    def reader
+      SudokuReader.new('valid_incomplete.sudoku')
+    end
+  end
+
+  describe "invalid an complete sudoku" do
+    it_behaves_like "a complete sudoku"
+    it_behaves_like "a invalid sudoku"
+
+    def reader
+      SudokuReader.new('invalid_complete.sudoku')
+    end
+  end
+
+  describe "invalid an incomplete sudoku" do
+    it_behaves_like "a incomplete sudoku"
+    it_behaves_like "a invalid sudoku"
+
+    def reader
+      SudokuReader.new('invalid_incomplete.sudoku')
     end
   end
 
@@ -70,19 +86,8 @@ describe SudokuValidator do
     it_behaves_like "a complete sudoku"
     it_behaves_like "a invalid sudoku"
 
-    def grid
-      [[1,1],
-       [2,3]]
-    end
-  end
-
-  describe "invalid lines and incomplete" do
-    it_behaves_like "a incomplete sudoku"
-    it_behaves_like "a invalid sudoku"
-
-    def grid
-      [[1,1],
-       [2,0]]
+    def reader
+      SudokuReader.new('invalid_complete.sudoku')
     end
   end
 
@@ -90,17 +95,21 @@ describe SudokuValidator do
     it_behaves_like "a complete sudoku"
     it_behaves_like "a invalid sudoku"
 
-    def grid
-      [[1,3],
-       [1,2]]
+    def reader
+      SudokuReader.new('invalid_column_complete.sudoku')
+    end
+  end
+
+  describe "invalid subblock and incomplete" do
+    it_behaves_like "a incomplete sudoku"
+    it_behaves_like "a invalid sudoku"
+
+    def reader
+      SudokuReader.new('invalid_block_incomplete.sudoku')
     end
   end
 
   def validator
     @validator ||= SudokuValidator.new(reader)
-  end
-
-  def reader
-    @reader ||= SudokuReader.new('a_path')
   end
 end

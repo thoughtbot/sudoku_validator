@@ -3,14 +3,14 @@ require_relative '../lib/sudoku_reader'
 describe SudokuReader do
   context "with the valid grid" do
     it "give grid" do
-      expect(reader.grid).to eq grid
+      expect(reader.lines).to eq lines
     end
 
     def reader
       SudokuReader.new('valid_complete.sudoku')
     end
 
-    def grid
+    def lines
       [[8,5,9,6,1,2,4,3,7],
        [7,2,3,8,5,4,1,6,9],
        [1,6,4,3,7,9,5,2,8],
@@ -25,14 +25,14 @@ describe SudokuReader do
 
   context "with the invalid complete grid" do
     it "give grid" do
-      expect(reader.grid).to eq grid
+      expect(reader.lines).to eq lines
     end
 
     def reader
       SudokuReader.new('invalid_complete.sudoku')
     end
 
-    def grid
+    def lines
       [[8,5,9,6,1,2,4,3,7],
        [7,2,3,8,5,4,1,6,9],
        [1,6,4,3,7,9,5,2,8],
@@ -47,14 +47,14 @@ describe SudokuReader do
 
   context "with the valid incomplete grid" do
     it "give grid" do
-      expect(reader.grid).to eq grid
+      expect(reader.lines).to eq lines
     end
 
     def reader
       SudokuReader.new('valid_incomplete.sudoku')
     end
 
-    def grid
+    def lines
       [[8,5,0,0,0,2,4,0,0],
        [7,2,0,0,0,0,0,0,9],
        [0,0,4,0,0,0,0,0,0],
@@ -69,14 +69,14 @@ describe SudokuReader do
 
   context "with the invalid incomplete grid" do
     it "give grid" do
-      expect(reader.grid).to eq grid
+      expect(reader.lines).to eq lines
     end
 
     def reader
       SudokuReader.new('invalid_incomplete.sudoku')
     end
 
-    def grid
+    def lines
       [[8,5,0,0,0,2,4,0,0],
        [7,2,0,0,8,0,0,0,9],
        [0,0,4,0,0,0,0,0,0],

@@ -1,20 +1,35 @@
 class SudokuValidator
+  attr_accessor :reader
+
   def initialize(reader)
     @reader = reader
   end
 
   def complete?
-    @reader.each_line {|line| return false if line.include?(0)}
+    reader.each_line {|line| return false if line.include?(0)}
     return true
   end
 
   def valid?
-    @reader.each_value_by_line do |line, value|
-      return false if line.count(value) > 1 && value != 0
-    end
+    lines_valid? && columns_valid? && blocks_valid?
+  end
 
-    @reader.each_value_by_column do |column, value|
-      return false if column.count(value) > 1 && value != 0
+  private
+  def lines_valid?
+    check_validity_for(:line)
+  end
+
+  def columns_valid?
+    check_validity_for(:column)
+  end
+
+  def blocks_valid?
+    check_validity_for(:block)
+  end
+
+  def check_validity_for(type)
+    reader.send("each_value_by_#{type}") do |row, value|
+      return false if row.count(value) > 1 && value != 0
     end
     return true
   end
