@@ -35,7 +35,7 @@ class SudokuReader
 
   def blocks
     return @blocks if @blocks.any?
-    init_blocks
+    init_empty_blocks
     fill_blocks
     @blocks
   end
@@ -49,12 +49,8 @@ class SudokuReader
   end
 
   private
-  def init_blocks
-    grid_size.times { @blocks << [] }
-  end
-
-  def grid_size
-    lines.first.count
+  def init_empty_blocks
+    9.times { @blocks << [] }
   end
 
   def convert_line_to_values(line)
