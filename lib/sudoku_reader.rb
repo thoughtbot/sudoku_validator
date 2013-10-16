@@ -40,6 +40,7 @@ class SudokuReader
     @blocks
   end
 
+  private
   def fill_blocks
     0.step(6,3) do |k|
       3.times do |i|
@@ -48,15 +49,12 @@ class SudokuReader
     end
   end
 
-  private
   def init_empty_blocks
     9.times { @blocks << [] }
   end
 
   def convert_line_to_values(line)
-    unless separator?(line)
-      @lines << line.split.map { |value| sanitize(value) }
-    end
+    @lines << line.split.map { |value| sanitize(value) } unless separator?(line)
   end
 
   def separator?(line)
