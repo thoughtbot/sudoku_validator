@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require './lib/sudoku_reader'
+require './lib/sudoku_validator'
+
+reader = SudokuReader.new(ARGV.first)
+validator = SudokuValidator.new(reader)
+
+puts validator.message
