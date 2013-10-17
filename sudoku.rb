@@ -1,6 +1,9 @@
 #sudoku.rb
 #takes one argument: the .sudoku file to analyze
 
+#right now duplicates the completeness check
+#didn't use TDD because I don't know how to outside of Rails 
+
 class Sudoku
 	@values = []
 
@@ -60,15 +63,47 @@ class Sudoku
 		end
 	end
 
+	def check_squares
+		valid=true
+		complete=true
+
+
+		for y in 1..3
+
+			for x in 1..3
+				box = []
+				for j in 1..3
+					for k in 1..3
+						box.push(@values[(x-1)*3+j-1][(y-1)*3+k-1])
+					end
+				end
+				valid = valid && valid?(box)
+				complete = complete && complete?(box)
+			end
+		end
+		return valid, complete
+	end
+
 	def check_sudoku
 		
 		c = check_columns
 		l = check_lines
-		valid = c[0] && l[0]
-		complete = c[1] && l[1]
+		q = check_squares
+		valid = q[0] && l[0] && c[0]
+		complete = q[1] && l[1] && c[0]
 
-		p 'sudoku is valid' if valid
-		p 'sudoku is complete' if complete
+		if valid
+			p 'Sudoku is valid'
+		else
+			p 'Sudoku is invalid'
+		end
+
+		if complete
+			p 'Sudoku is complete'
+		else
+			p 'Sudoku is incomplete'
+		end
+
 	end
 
 end
@@ -94,26 +129,4 @@ mySudoku = Sudoku.new(grid)
 
 
 mySudoku.check_sudoku
-mySudoku.printlines
 
-
-# mySudoku.values.each do |l|
-# 	p l+ "  complete: "+Sudoku.complete?(l)+" valid: "+Sudoku.valid?(l)
-# end
-
-
-
-
-# for y in 1..3
-# 	puts ""
-# 	75.times {print '-'}
-# 	for x in 1..3
-# 		puts ""
-# 		for j in 1..3
-# 			print " | "
-# 			for k in 1..3
-# 				print "(#{(y-1)*3+x}, #{(j-1)*3+k}) "
-# 			end
-# 		end
-# 	end
-# end
