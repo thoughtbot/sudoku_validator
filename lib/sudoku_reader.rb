@@ -57,15 +57,11 @@ class SudokuReader
   end
 
   def each_vertical_start_of_block
-    0.step(6,3) do |index_of_subblock|
-      yield(index_of_subblock)
-    end
+    0.step(6,3) {|index_of_subblock| yield(index_of_subblock)}
   end
 
   def loop_in_subblock
-    3.times do |index_line_of_block|
-      yield(index_line_of_block)
-    end
+    3.times {|index_line_of_block| yield(index_line_of_block)}
   end
   alias :each_horizontal_start_of_block :loop_in_subblock
   alias :each_line_in_block :loop_in_subblock
