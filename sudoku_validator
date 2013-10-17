@@ -2,7 +2,7 @@
 require_relative 'lib/sudoku_validator'
 
 @validator = SudokuValidator.new(ARGV[0])
-validity, status = @validator.analyze
+validity, status = @validator.validate
 output = ""
 output = "This sudoku is #{validity}"
 output += ", and #{status}"

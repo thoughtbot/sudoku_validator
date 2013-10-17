@@ -9,7 +9,7 @@ class SudokuValidator
     @errors = []
   end
 
-  def analyze
+  def validate
     status = check_game_status
     validity = check_game_validity
     [validity, status]

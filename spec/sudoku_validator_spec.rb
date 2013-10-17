@@ -43,19 +43,19 @@ describe SudokuValidator do
     end
 
     it "returns the descriptive error string for col errors" do
-      @game.analyze
+      @game.validate
       @game.errors.should include "2 is repeated in col 6"
     end
 
     it "returns the descriptive error string for row errors" do
       @game.game.board[0][0] = 7
-      @game.analyze
+      @game.validate
       @game.errors.should include "7 is repeated in row 1"
     end
 
     it "returns the descrptive error string for sub-grid errors" do
       @game.game.board[0][0] = 7
-      @game.analyze
+      @game.validate
       @game.errors.should include "7 is repeated in sub_grid 1"
     end
 
@@ -63,7 +63,7 @@ describe SudokuValidator do
       @game.game.board[0][0] = 0 
       @game.game.board[0][6] = 0
       @game.game.board[0][3] = 0
-      @game.analyze
+      @game.validate
       @game.errors.should_not include "0 is repeated in row 1"
     end
   end
