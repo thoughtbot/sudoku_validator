@@ -3,6 +3,7 @@ class SudokuValidator
 
   def initialize(reader)
     @reader = reader
+    @errors = []
   end
 
   def complete?
@@ -18,7 +19,7 @@ class SudokuValidator
     if valid?
       "This sudoku is valid#{complete_message}."
     else
-      "This sudoku is invalid."
+      "This sudoku is invalid." + @errors.join
     end
   end
 
@@ -40,9 +41,11 @@ class SudokuValidator
   end
 
   def check_validity_for(type)
-    reader.send("each_value_by_#{type}") do |row, value|
-      return false if row.count(value) > 1 && value != 0
+    reader.send("each_value_by_#{type}") do |row, value, index|
+      if row.count(value) > 1 && value != 0
+        @errors << "\n - There is multiple #{value} in #{type} #{index + 1}."
+      end
     end
-    return true
+    @errors.empty?
   end
 end

@@ -62,7 +62,14 @@ describe SudokuValidator do
     context "when the sudoku is invalid" do
       it "say than the sudoku is invalid" do
         ['invalid_complete.sudoku', 'invalid_incomplete.sudoku'].each do |file|
-          expect(validator_for(file).message).to eq "This sudoku is invalid."
+          expect(validator_for(file).message).to match "This sudoku is invalid."
+        end
+      end
+
+      context "when the sudoku is invalid du to lines" do
+        it "say than there is an error in line" do
+          file = 'invalid_line.sudoku'
+          expect(validator_for(file).message).to match "There is multiple 5 in line 1."
         end
       end
     end

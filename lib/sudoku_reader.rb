@@ -14,19 +14,23 @@ class SudokuReader
   end
 
   def each_line
-    lines.each {|line| yield(line)}
+    lines.each_with_index {|line, index| yield(line, index)}
   end
 
   def each_value_by_line
-    each_line {|line| line.each{|value| yield(line, value)}}
+    each_line {|line, index| line.each{|value| yield(line, value, index)}}
   end
 
   def each_value_by_column
-    columns.each {|column| column.each{|value| yield(column, value)}}
+    columns.each_with_index do |column, index|
+      column.each{|value| yield(column, value, index)}
+    end
   end
 
   def each_value_by_block
-    blocks.each {|block| block.each{|value| yield(block, value)}}
+    blocks.each_with_index do |block, index|
+      block.each{|value| yield(block, value, index)}
+    end
   end
 
   def columns
