@@ -15,6 +15,10 @@ class SudokuBoard
     @board[row-1][col-1]
   end
 
+  def []= (row, col, value)
+    @board[row-1][col-1] = value
+  end
+
   def row(row)
     @board[row-1]
   end
