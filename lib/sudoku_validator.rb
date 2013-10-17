@@ -1,11 +1,11 @@
 require_relative './sudoku_board'
 
 class SudokuValidator
-  attr_reader :game, :errors
+  attr_reader :board, :errors
 
   def initialize(game_file)
     @game_file = game_file
-    @game = SudokuBoard.new @game_file
+    @board = SudokuBoard.new @game_file
     @errors = []
   end
 
@@ -27,7 +27,7 @@ class SudokuValidator
   end
 
   def missing_data?
-    !(@game.board.flatten.index( 0 )).nil?
+    !(@board.board.flatten.index( 0 )).nil?
   end
 
   def check_row_validity
@@ -45,7 +45,7 @@ class SudokuValidator
   def valid_element?(element)
     item_valid = true
     (1..9).each do |item|
-      valid, error = valid?(@game.__send__(element.to_sym,item))
+      valid, error = valid?(@board.__send__(element.to_sym,item))
       item_valid &&= valid
       report_errors(error, element, item)
     end
