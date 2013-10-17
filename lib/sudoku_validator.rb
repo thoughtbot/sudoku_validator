@@ -16,7 +16,7 @@ class SudokuValidator
   end
 
   def check_game_status
-    self.missing_data? ?  'incomplete' : 'complete'
+    @board.missing_data? ?  'incomplete' : 'complete'
   end
 
   def check_game_validity
@@ -26,26 +26,22 @@ class SudokuValidator
     (rows_valid && cols_valid && subgrids_valid) ? 'valid' : 'invalid'
   end
 
-  def missing_data?
-    !(@board.board.flatten.index( 0 )).nil?
-  end
-
   def check_row_validity
-    valid_element?('row')
+    valid_element?(:row)
   end
 
   def check_col_validity
-    valid_element?('col')
+    valid_element?(:col)
   end
   
   def check_subgrid_validity
-    valid_element?('sub_grid')
+    valid_element?(:sub_grid)
   end
 
   def valid_element?(element)
     item_valid = true
     (1..9).each do |item|
-      valid, error = valid?(@board.__send__(element.to_sym,item))
+      valid, error = valid?(@board.__send__(element,item))
       item_valid &&= valid
       report_errors(error, element, item)
     end

@@ -56,4 +56,8 @@ class SudokuBoard
     col = ((sub_grid-1)%3)*3 + 1
     [row,col]
   end
+
+  def missing_data?
+    !(self.board.flatten.index( 0 )).nil?
+  end
 end
