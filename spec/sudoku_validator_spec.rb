@@ -33,9 +33,9 @@ describe SudokuValidator do
       it "give true" do
         ['invalid_complete.sudoku',
          'invalid_incomplete.sudoku',
-         'invalid_column_complete.sudoku',
-         'invalid_block_incomplete.sudoku',
-         'invalid_line_complete.sudoku'].each do |file|
+         'invalid_column.sudoku',
+         'invalid_block.sudoku',
+         'invalid_line.sudoku'].each do |file|
           expect(validator_for(file)).to_not be_valid
         end
       end
