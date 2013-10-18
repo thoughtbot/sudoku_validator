@@ -30,21 +30,35 @@ class SudokuValidator
     grid.map { |row| row[i-1] }
   end
 
+  # subgrid is laid out as below
+  #       1       2       3   <- grid_column_index
+  #     1 - 3   4 - 6   7 - 9
+  #   1 . . . | . . . | . . .
+  # 1 | . 1 . | . 2 . | . 3 .
+  #   3 . . . | . . . | . . .
+  #     +-----+-------+-----+
+  #   4 . . . | . . . | . . .
+  # 2 | . 4 . | . 5 . | . 6 .
+  #   6 . . . | . . . | . . .
+  #     +-----+-------+-----+
+  #   7 . . . | . . . | . . .
+  # 3 | . 7 . | . 8 . | . 9 .
+  #   9 . . . | . . . | . . .
+  #
+  # ^
+  # grid_row_index
+  #
   def subgrid(i)
-    # subgrid as laid out below
-    # 1 2 3
-    # 4 5 6
-    # 7 8 9
+    
+    grid_row_index = (i - 1) / 3 + 1
 
-    row_index = (i - 1) / 3 + 1
+    grid_column_index = ( i - 1) % 3 + 1
 
-    column_index = ( i - 1) % 3 + 1
+    row_begin = (grid_row_index - 1) * 3 + 1
+    row_end = grid_row_index * 3
 
-    row_begin = (row_index - 1) * 3 + 1
-    row_end = row_index * 3
-
-    column_begin = (column_index - 1) * 3 + 1
-    column_end = column_index * 3
+    column_begin = (grid_column_index - 1) * 3 + 1
+    column_end = grid_column_index * 3
 
     subgrid_array = []
     (row_begin..row_end).each do |ri|

@@ -47,7 +47,7 @@ describe SudokuValidator do
   end
 
   describe '#column' do
-    it 'retrieves a row as an array' do
+    it 'retrieves a column as an array' do
       validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
 
       expect(validator.column(2)).to eq ["5", "2", ".", ".", ".", "4", ".", "1", "."]
@@ -56,17 +56,29 @@ describe SudokuValidator do
   end
 
   describe '#subgrid' do
-    # subgrid indexed as below
-    #     1 2 3
-    #     - - -
-    # 1 - 1 2 3
-    # 2 - 4 5 6
-    # 3 - 7 8 9
+    # subgrid is laid out as below
+    #       1       2       3   <- grid_column_index
+    #     1 - 3   4 - 6   7 - 9
+    #   1 . . . | . . . | . . .
+    # 1 | . 1 . | . 2 . | . 3 .
+    #   3 . . . | . . . | . . .
+    #     +-----+-------+-----+
+    #   4 . . . | . . . | . . .
+    # 2 | . 4 . | . 5 . | . 6 .
+    #   6 . . . | . . . | . . .
+    #     +-----+-------+-----+
+    #   7 . . . | . . . | . . .
+    # 3 | . 7 . | . 8 . | . 9 .
+    #   9 . . . | . . . | . . .
+    #
+    # ^
+    # grid_row_index
+    #
 
-    it 'retrieves a row as an array' do
+    it 'retrieves a subgrid as an array' do
       validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
 
-      # expect(validator.subgrid(3)).to eq ["4", ".", ".", ".", ".", "9", ".", ".", "."]
+      expect(validator.subgrid(3)).to eq ["4", ".", ".", ".", ".", "9", ".", ".", "."]
       expect(validator.subgrid(7)).to eq [".", ".", ".", ".", "1", "7", ".", ".", "."]
     end
   end
