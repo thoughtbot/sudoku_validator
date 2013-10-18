@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require_relative 'lib/sudoku_reader'
+require_relative 'lib/sudoku_validator'
+
+path = ARGV[0]
+
+validator = SudokuValidator.new path
+
+if validator.valid?
+  if validator.complete?
+    puts "This sudoku is valid."
+  else
+    puts "This sudoku is valid, but incomplete."
+  end
+else
+  puts 'This sudoku is invalid.'
+end
