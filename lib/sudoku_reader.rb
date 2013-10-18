@@ -46,29 +46,32 @@ class SudokuReader
 
   private
   def fill_blocks
-    each_vertical_start_of_block do |i|
-      each_horizontal_start_of_block do |j|
-        each_line_in_block {|k| get_line_of_block(i, j, k)}
-      end
+    each_block do |block_number|
+      line, column = block_start(block_number)
+      each_line_in_block {|k| get_line_of_block(line, column, k)}
     end
   end
 
+  def block_start(block_number)
+    row = ((block_number) / 3) * 3
+    col = ((block_number) % 3) * 3
+    [row,col]
+  end
+
   def get_line_of_block(vertical_start, horizontal_start, line_block)
-    line = lines[horizontal_start * 3 + line_block]
+    line = lines[horizontal_start + line_block]
     line_in_block = line.drop(vertical_start).first(3)
-    index_of_block = vertical_start + horizontal_start
+    index_of_block = vertical_start + horizontal_start/3
     @blocks[index_of_block] += line_in_block
   end
 
-  def each_vertical_start_of_block
-    0.step(6,3) {|index_of_subblock| yield(index_of_subblock)}
+  def each_block
+    9.times {|block_number| yield(block_number)}
   end
 
-  def loop_in_subblock
+  def each_line_in_block
     3.times {|index_line_of_block| yield(index_line_of_block)}
   end
-  alias :each_horizontal_start_of_block :loop_in_subblock
-  alias :each_line_in_block :loop_in_subblock
 
   def init_empty_blocks
     9.times { @blocks << [] }
