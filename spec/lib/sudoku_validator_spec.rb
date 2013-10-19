@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'yaml'
 
 describe SudokuValidator do
 
@@ -83,19 +84,36 @@ describe SudokuValidator do
     end
   end
 
+  describe '#validate!' do
+    it 'runs finds and logs all the errors' do
+      validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator.validate!
+      expect(validator.errors[:invalid][:row]).to eq []
+      expect(validator.errors[:invalid][:column]).to eq [2, 5]
+      expect(validator.errors[:invalid][:subgrid]).to eq []
+      expect(validator.errors[:incomplete][:row]).to eq [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      expect(validator.errors[:incomplete][:column]).to eq [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      expect(validator.errors[:incomplete][:subgrid]).to eq [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    end
+  end 
+
   describe '#valid?' do
     
     it 'validates all 3 array checks' do
       validator = SudokuValidator.new fixture_path('valid_complete.sudoku')
+      validator.validate!
       expect(validator.valid?).to be_true
 
       validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
+      validator.validate!
       expect(validator.valid?).to be_true
 
       validator = SudokuValidator.new fixture_path('invalid_complete.sudoku')
+      validator.validate!
       expect(validator.valid?).to be_false
 
       validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator.validate!
       expect(validator.valid?).to be_false
     end
   end
@@ -104,17 +122,22 @@ describe SudokuValidator do
     
     it 'validates all 3 array checks' do
       validator = SudokuValidator.new fixture_path('valid_complete.sudoku')
-      expect(validator.complete?).to be_true
-
-      validator = SudokuValidator.new fixture_path('invalid_complete.sudoku')
+      validator.validate!
       expect(validator.complete?).to be_true
 
       validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
+      validator.validate!
       expect(validator.complete?).to be_false
 
       validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator.validate!
       expect(validator.complete?).to be_false
+
+      validator = SudokuValidator.new fixture_path('invalid_complete.sudoku')
+      validator.validate!
+      expect(validator.complete?).to be_true
     end
   end
 
+  
 end

@@ -2,17 +2,68 @@
 
 require_relative 'lib/sudoku_reader'
 require_relative 'lib/sudoku_validator'
+require 'json'
 
 path = ARGV[0]
 
 validator = SudokuValidator.new path
+validator.validate!
+
+GRID_LOCATION = <<TEXT
+
+**********************************
+
+For your reference subgrid location can be seen here:
+
+    column
+      |
+
+      1 2 3   4 5 6   7 8 9
+    1 . . . | . . . | . . .  - row
+    2 . 1 . | . 2 . | . 3 .
+    3 . . . | . . . | . . .
+      +-----+-------+-----+
+    4 . . . | . . . | . . .  |
+    5 . 4 . | . 5 . | . 6 .   > subgrid
+    6 . . . | . . . | . . .  |
+      +-----+-------+-----+
+    7 . . . | . . . | . . .
+    8 . 7 . | . 8 . | . 9 .
+    9 . . . | . . . | . . .
+
+
+**********************************
+TEXT
 
 if validator.valid?
   if validator.complete?
     puts "This sudoku is valid."
   else
     puts "This sudoku is valid, but incomplete."
+    puts "\n** Errors *************************\n"
+    puts ""
+    validator.errors[:incomplete].each do |key, vals|
+      if vals.any?
+        puts "incomplete #{key}s: #{vals.join(", ")}"
+      end
+    end
+    puts GRID_LOCATION
   end
 else
   puts 'This sudoku is invalid.'
+  puts "\n** Errors *************************"
+  puts ""
+  unless validator.valid?
+    validator.errors[:invalid].each do |key, vals|
+      if vals.any?
+        puts "invalid #{key}s: #{vals.join(", ")}"
+      end
+    end
+  end
+  validator.errors[:incomplete].each do |key, vals|
+    if vals.any?
+      puts "incomplete #{key}s: #{vals.join(", ")}"
+    end
+  end
+  puts GRID_LOCATION
 end

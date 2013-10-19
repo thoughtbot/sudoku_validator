@@ -11,6 +11,7 @@ class SudokuValidator
   end
 
   attr_reader :grid
+  attr_reader :errors
 
   def initialize(grid_or_filepath)
     if grid_or_filepath.instance_of? String
@@ -20,6 +21,18 @@ class SudokuValidator
     else
       @grid = grid_or_filepath
     end
+    @errors = {
+      invalid: {
+        column: [],
+        row: [],
+        subgrid: []
+      },
+      incomplete: {
+        column: [],
+        row: [],
+        subgrid: []
+      }
+    }
   end
 
   def row(i)
@@ -69,15 +82,39 @@ class SudokuValidator
     subgrid_array
   end
 
+  def validate!
+    [:invalid, :incomplete].each do |error_type|
+      reset_errors(error_type)
+      [:row, :column, :subgrid].each do |row_or_column_or_subgrid|
+        (1..9).each do |i|
+          row_or_column_or_subgrid_array = send(row_or_column_or_subgrid, i) 
+
+          validation_method = (error_type.to_s.gsub(/in/, '')+'_array?').to_sym # :invalid -> :valid_array?
+
+          unless SudokuValidator.send validation_method, row_or_column_or_subgrid_array
+            @errors[error_type][row_or_column_or_subgrid] << i 
+          end
+        end
+      end
+    end
+  end
+
   def valid?
-    (1..9).all? { |i| SudokuValidator.valid_array?(row(i)) } and 
-    (1..9).all? { |i| SudokuValidator.valid_array?(column(i)) } and
-    (1..9).all? { |i| SudokuValidator.valid_array?(subgrid(i)) }
+    errors[:invalid][:row].length == 0 and 
+    errors[:invalid][:column].length == 0 and 
+    errors[:invalid][:subgrid].length == 0
   end
 
   def complete?
-    (1..9).all? { |i| SudokuValidator.complete_array?(row(i)) } and 
-    (1..9).all? { |i| SudokuValidator.complete_array?(column(i)) } and
-    (1..9).all? { |i| SudokuValidator.complete_array?(subgrid(i)) }
+    errors[:incomplete][:row].length == 0 and 
+    errors[:incomplete][:column].length == 0 and 
+    errors[:incomplete][:subgrid].length == 0
   end
+
+  def reset_errors(type)
+    @errors[type][:row].clear
+    @errors[type][:column].clear
+    @errors[type][:subgrid].clear
+  end
+
 end
