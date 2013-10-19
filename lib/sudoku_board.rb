@@ -35,13 +35,14 @@ class SudokuBoard
     row, col = sub_grid_start(number)
     s_grid = []
     3.times do
-      3.times do
-        s_grid << self[row,col]
-        col += 1
-      end
-      row += 1; col -= 3
+      s_grid += sub_grid_row(row,col)
+      row += 1
     end
     s_grid
+  end
+
+  def sub_grid_row(row,col)
+    [self[row,col],self[row,col+1],self[row,col+2]]
   end
 
   def convert_line_to_row(line)
