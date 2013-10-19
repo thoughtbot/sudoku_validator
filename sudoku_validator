@@ -3,9 +3,5 @@ require_relative 'lib/sudoku_validator'
 
 @validator = SudokuValidator.new(ARGV[0])
 validity, status = @validator.validate
-output = ""
-output = "This sudoku is #{validity}"
-output += ", and #{status}"
-output += "."
-puts output
+puts "This sudoku is #{validity}, and #{status}."
 @validator.errors.each { |err| puts err }
