@@ -1,9 +1,6 @@
 require 'minitest'
 require 'minitest/autorun'
-require_relative 'lib/board_reader'
-require_relative 'lib/board_validator'
-
-
+require_relative '../lib/board_validator'
 require 'minitest/autorun'
 
 module MiniTest::Assertions

@@ -7,10 +7,10 @@ module Sudoku
 
     def read
       board = []
-      open(@file).each do |line|
-        board << line.chomp
-        # could get more involved checking specific lines here
-        raise 'Invalid board string' unless line =~ /[1-9].+-|/
+      open(@file).each_with_index do |l,index|
+        board << l.chomp!
+        # could get more involved checking specific lines here like ---+---+---
+        raise "Invalid board string [#{board[index]}]" if board[index].match(/^[1-9|+.\-\s]+$/) == nil
       end
       board
     end
