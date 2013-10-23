@@ -18,6 +18,22 @@ describe SudokuReader do
     end
   end
 
+  describe '.separator_line?' do
+    it 'returns true if the line is -----' do
+      line = "------+------+------"
+
+      expect(SudokuReader.separator_line?(line)).to be_true
+
+      line = "8 5 9 |6 1 2 |4 3 7 "
+
+      expect(SudokuReader.separator_line?(line)).to be_false
+
+      line = ". . . |. 8 . |. 7 . "
+
+      expect(SudokuReader.separator_line?(line)).to be_false
+    end
+  end
+
   describe '#read' do
     it 'reads and stores the file into an array' do
       reader = SudokuReader.new 

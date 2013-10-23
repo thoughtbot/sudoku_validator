@@ -4,8 +4,11 @@ class SudokuReader
   attr_reader :grid
 
   def self.parse_line(line)
-    # sample: "8 5 9 |6 1 2 |4 3 7 "
-    line.split("|").map { |segment| segment.split(" ") }.flatten unless line =~ /^-+/
+    line.split(/[^\d\.]+/) unless separator_line? line
+  end
+
+  def self.separator_line?(line)
+    line =~/^-+/
   end
 
   def initialize

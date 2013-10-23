@@ -42,28 +42,14 @@ if validator.valid?
     puts "This sudoku is valid, but incomplete."
     puts "\n** Errors *************************\n"
     puts ""
-    validator.errors[:incomplete].each do |key, vals|
-      if vals.any?
-        puts "incomplete #{key}s: #{vals.join(", ")}"
-      end
-    end
+    validator.error_messages(:incomplete).each { |msg| puts msg }
     puts GRID_LOCATION
   end
 else
   puts 'This sudoku is invalid.'
   puts "\n** Errors *************************"
   puts ""
-  unless validator.valid?
-    validator.errors[:invalid].each do |key, vals|
-      if vals.any?
-        puts "invalid #{key}s: #{vals.join(", ")}"
-      end
-    end
-  end
-  validator.errors[:incomplete].each do |key, vals|
-    if vals.any?
-      puts "incomplete #{key}s: #{vals.join(", ")}"
-    end
-  end
+  validator.error_messages(:invalid).each { |msg| puts msg }
+  validator.error_messages(:incomplete).each { |msg| puts msg }
   puts GRID_LOCATION
 end

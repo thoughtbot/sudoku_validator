@@ -10,6 +10,14 @@ class SudokuValidator
     array_with_numbers_only.length == 9
   end
 
+  def self.array_is?(validation_type, array)
+    if validation_type == :invalid
+      not valid_array? array
+    else
+      not complete_array? array
+    end
+  end
+
   attr_reader :grid
   attr_reader :errors
 
@@ -44,39 +52,37 @@ class SudokuValidator
   end
 
   # subgrid is laid out as below
-  #       1       2       3   <- grid_column_index
-  #     1 - 3   4 - 6   7 - 9
-  #   1 . . . | . . . | . . .
-  # 1 | . 1 . | . 2 . | . 3 .
-  #   3 . . . | . . . | . . .
-  #     +-----+-------+-----+
-  #   4 . . . | . . . | . . .
-  # 2 | . 4 . | . 5 . | . 6 .
-  #   6 . . . | . . . | . . .
-  #     +-----+-------+-----+
-  #   7 . . . | . . . | . . .
-  # 3 | . 7 . | . 8 . | . 9 .
-  #   9 . . . | . . . | . . .
+  #           1-based                        0-based
+  #       1       2       3              0       1       2     <- grid_column_index
+  #     1 - 3   4 - 6   7 - 9          0 - 2   3 - 5   6 - 8
+  #   1 . . . | . . . | . . .        0 . . . | . . . | . . .
+  # 1 | . 1 . | . 2 . | . 3 .      0 | . 0 . | . 1 . | . 2 .
+  #   3 . . . | . . . | . . .        2 . . . | . . . | . . .
+  #     +-----+-------+-----+          +-----+-------+-----+
+  #   4 . . . | . . . | . . .        3 . . . | . . . | . . .
+  # 2 | . 4 . | . 5 . | . 6 .      1 | . 3 . | . 4 . | . 5 .
+  #   6 . . . | . . . | . . .        5 . . . | . . . | . . .
+  #     +-----+-------+-----+          +-----+-------+-----+
+  #   7 . . . | . . . | . . .        6 . . . | . . . | . . .
+  # 3 | . 7 . | . 8 . | . 9 .      2 | . 6 . | . 7 . | . 8 .
+  #   9 . . . | . . . | . . .        8 . . . | . . . | . . .
   #
-  # ^
-  # grid_row_index
+  #                                ^
+  #                                grid_row_index
   #
   def subgrid(i)
-    
-    grid_row_index = (i - 1) / 3 + 1
+    i = i - 1 # convert to 0-based
 
-    grid_column_index = ( i - 1) % 3 + 1
+    grid_row_index = i / 3
+    grid_column_index = i % 3
 
-    row_begin = (grid_row_index - 1) * 3 + 1
-    row_end = grid_row_index * 3
-
-    column_begin = (grid_column_index - 1) * 3 + 1
-    column_end = grid_column_index * 3
+    row_range = grid_row_index * 3 ... grid_row_index.next * 3
+    column_range = grid_column_index * 3 ... grid_column_index.next * 3
 
     subgrid_array = []
-    (row_begin..row_end).each do |ri|
-      (column_begin..column_end).each do |ci|
-        subgrid_array << grid[ri-1][ci-1]
+    row_range.each do |ri|
+      column_range.each do |ci|
+        subgrid_array << grid[ri][ci]
       end
     end
     subgrid_array
@@ -85,14 +91,10 @@ class SudokuValidator
   def validate!
     [:invalid, :incomplete].each do |error_type|
       reset_errors(error_type)
-      [:row, :column, :subgrid].each do |row_or_column_or_subgrid|
+      [:row, :column, :subgrid].each do |array_type|
         (1..9).each do |i|
-          row_or_column_or_subgrid_array = send(row_or_column_or_subgrid, i) 
-
-          validation_method = (error_type.to_s.gsub(/in/, '')+'_array?').to_sym # :invalid -> :valid_array?
-
-          unless SudokuValidator.send validation_method, row_or_column_or_subgrid_array
-            @errors[error_type][row_or_column_or_subgrid] << i 
+          if SudokuValidator.array_is? error_type, send(array_type, i)
+            errors[error_type][array_type] << i 
           end
         end
       end
@@ -100,21 +102,20 @@ class SudokuValidator
   end
 
   def valid?
-    errors[:invalid][:row].length == 0 and 
-    errors[:invalid][:column].length == 0 and 
-    errors[:invalid][:subgrid].length == 0
+    [:row, :column, :subgrid].all? { |array_type| errors[:invalid][array_type].none? }
   end
 
   def complete?
-    errors[:incomplete][:row].length == 0 and 
-    errors[:incomplete][:column].length == 0 and 
-    errors[:incomplete][:subgrid].length == 0
+    [:row, :column, :subgrid].all? { |array_type| errors[:incomplete][array_type].none? }
   end
 
   def reset_errors(type)
-    @errors[type][:row].clear
-    @errors[type][:column].clear
-    @errors[type][:subgrid].clear
+    [:row, :column, :subgrid].each { |array_type| errors[type][array_type].clear }
   end
 
+  def error_messages(type)
+    errors[type].map do |key, vals| 
+      "#{type} #{key}s: #{vals.join(", ")}" if vals.any? 
+    end.compact.sort
+  end
 end

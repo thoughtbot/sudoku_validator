@@ -19,6 +19,32 @@ describe SudokuValidator do
     end
   end
 
+  describe '.array_ok?' do
+    it 'calls valid_array? if :invalid is given and returns the opposite' do
+      some_array = [1,2,3]
+      
+      expect(SudokuValidator).to receive(:valid_array?).with(some_array).once.and_return(false)
+      
+      expect(SudokuValidator.array_is?(:invalid, some_array)).to be_true
+
+      expect(SudokuValidator).to receive(:valid_array?).with(some_array).once.and_return(true)
+
+      expect(SudokuValidator.array_is?(:invalid, some_array)).to be_false
+    end
+
+    it 'calls complete_array? if :incomplete is given and returns the opposite' do
+      some_array = [1,2,3]
+      
+      expect(SudokuValidator).to receive(:complete_array?).with(some_array).once.and_return(false)
+      
+      expect(SudokuValidator.array_is?(:incomplete, some_array)).to be_true
+
+      expect(SudokuValidator).to receive(:complete_array?).with(some_array).once.and_return(true)
+
+      expect(SudokuValidator.array_is?(:incomplete, some_array)).to be_false
+    end
+  end
+
   describe '#initialize' do
     it 'stores the grid' do
       reader = SudokuReader.new
@@ -95,7 +121,23 @@ describe SudokuValidator do
       expect(validator.errors[:incomplete][:column]).to eq [1, 2, 3, 4, 5, 6, 7, 8, 9]
       expect(validator.errors[:incomplete][:subgrid]).to eq [1, 2, 3, 4, 5, 6, 7, 8, 9]
     end
-  end 
+  end
+
+  describe '#error_messages' do
+    it 'ouputs the correct error messages' do
+      validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator.validate!
+
+      expect(validator.error_messages(:invalid)).to eq [
+        "invalid columns: 2, 5"
+      ]
+      expect(validator.error_messages(:incomplete)).to eq [
+        "incomplete columns: 1, 2, 3, 4, 5, 6, 7, 8, 9",
+        "incomplete rows: 1, 2, 3, 4, 5, 6, 7, 8, 9",
+        "incomplete subgrids: 1, 2, 3, 4, 5, 6, 7, 8, 9"
+      ]
+    end
+  end
 
   describe '#valid?' do
     
