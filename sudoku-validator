@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require_relative 'lib/sudoku_reader'
+require_relative 'lib/sudoku_validator'
+require 'json'
+
+path = ARGV[0]
+
+validator = SudokuValidator.new path
+validator.validate!
+
+GRID_LOCATION = <<TEXT
+
+**********************************
+
+For your reference subgrid location can be seen here:
+
+    column
+      |
+
+      1 2 3   4 5 6   7 8 9
+    1 . . . | . . . | . . .  - row
+    2 . 1 . | . 2 . | . 3 .
+    3 . . . | . . . | . . .
+      +-----+-------+-----+
+    4 . . . | . . . | . . .  |
+    5 . 4 . | . 5 . | . 6 .   > subgrid
+    6 . . . | . . . | . . .  |
+      +-----+-------+-----+
+    7 . . . | . . . | . . .
+    8 . 7 . | . 8 . | . 9 .
+    9 . . . | . . . | . . .
+
+
+**********************************
+TEXT
+
+if validator.valid?
+  if validator.complete?
+    puts "This sudoku is valid."
+  else
+    puts "This sudoku is valid, but incomplete."
+    puts ""
+    validator.error_messages(:incomplete).each { |msg| puts msg }
+    puts GRID_LOCATION
+  end
+else
+  puts 'This sudoku is invalid.'
+  puts ""
+  validator.error_messages(:invalid).each { |msg| puts msg }
+  validator.error_messages(:incomplete).each { |msg| puts msg }
+  puts GRID_LOCATION
+end
