@@ -89,8 +89,9 @@ class SudokuValidator
   end
 
   def validate!
+    reset_errors!
+
     [:invalid, :incomplete].each do |error_type|
-      reset_errors(error_type)
       [:row, :column, :subgrid].each do |array_type|
         (1..9).each do |i|
           if SudokuValidator.array_is? error_type, send(array_type, i)
@@ -109,8 +110,12 @@ class SudokuValidator
     [:row, :column, :subgrid].all? { |array_type| errors[:incomplete][array_type].none? }
   end
 
-  def reset_errors(type)
-    [:row, :column, :subgrid].each { |array_type| errors[type][array_type].clear }
+  def reset_errors!
+    [:invalid, :incomplete].each do |error_type|
+      [:row, :column, :subgrid].each do |array_type| 
+        errors[error_type][array_type].clear
+      end
+    end
   end
 
   def error_messages(type)
