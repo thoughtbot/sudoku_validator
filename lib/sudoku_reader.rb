@@ -1,15 +1,13 @@
 
 class SudokuReader
 
+  def self.reader_from_file(file_path)
+    reader = SudokuReader.new
+    reader.read(file_path)
+    reader
+  end
+
   attr_reader :grid
-
-  def self.parse_line(line)
-    line.split(/[^\d\.]+/) unless separator_line? line
-  end
-
-  def self.separator_line?(line)
-    line =~/^-+/
-  end
 
   def initialize
     @grid = []
@@ -17,8 +15,16 @@ class SudokuReader
 
   def read(file_path)
     open(file_path).each do |line|
-      parsed_line = SudokuReader.parse_line line
+      parsed_line = parse_line line
       @grid << parsed_line if parsed_line
     end
+  end
+
+  def parse_line(line)
+    line.split(/[^\d\.]+/) unless separator_line? line
+  end
+
+  def separator_line?(line)
+    line =~/^-+/
   end
 end

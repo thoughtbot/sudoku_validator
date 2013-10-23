@@ -40,14 +40,12 @@ if validator.valid?
     puts "This sudoku is valid."
   else
     puts "This sudoku is valid, but incomplete."
-    puts "\n** Errors *************************\n"
     puts ""
     validator.error_messages(:incomplete).each { |msg| puts msg }
     puts GRID_LOCATION
   end
 else
   puts 'This sudoku is invalid.'
-  puts "\n** Errors *************************"
   puts ""
   validator.error_messages(:invalid).each { |msg| puts msg }
   validator.error_messages(:incomplete).each { |msg| puts msg }

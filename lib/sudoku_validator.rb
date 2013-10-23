@@ -1,34 +1,10 @@
 class SudokuValidator
 
-  def self.valid_array?(array)
-    array_with_numbers_only = array.reject { |el| el == "." }
-    array_with_numbers_only.uniq.length == array_with_numbers_only.length
-  end
-
-  def self.complete_array?(array)
-    array_with_numbers_only = array.reject { |el| el == "." }
-    array_with_numbers_only.length == 9
-  end
-
-  def self.array_is?(validation_type, array)
-    if validation_type == :invalid
-      not valid_array? array
-    else
-      not complete_array? array
-    end
-  end
-
   attr_reader :grid
   attr_reader :errors
 
-  def initialize(grid_or_filepath)
-    if grid_or_filepath.instance_of? String
-      reader = SudokuReader.new
-      reader.read grid_or_filepath
-      @grid = reader.grid
-    else
-      @grid = grid_or_filepath
-    end
+  def initialize(file_path)
+    @grid = SudokuReader.reader_from_file(file_path).grid
     @errors = {
       invalid: {
         column: [],
@@ -43,6 +19,26 @@ class SudokuValidator
     }
   end
 
+  def valid_array?(array)
+    numbers_only(array).uniq.length == numbers_only(array).length
+  end
+
+  def complete_array?(array)
+    numbers_only(array).length == 9
+  end
+
+  def numbers_only(array)
+    array.reject { |el| el == "." }
+  end
+
+  def array_is?(validation_type, array)
+    if validation_type == :invalid
+      not valid_array? array
+    else
+      not complete_array? array
+    end
+  end
+
   def row(i)
     grid[i-1]
   end
@@ -53,7 +49,7 @@ class SudokuValidator
 
   # subgrid is laid out as below
   #           1-based                        0-based
-  #       1       2       3              0       1       2     <- grid_column_index
+  #       1       2       3              0       1       2     <- grid_index for column
   #     1 - 3   4 - 6   7 - 9          0 - 2   3 - 5   6 - 8
   #   1 . . . | . . . | . . .        0 . . . | . . . | . . .
   # 1 | . 1 . | . 2 . | . 3 .      0 | . 0 . | . 1 . | . 2 .
@@ -68,35 +64,32 @@ class SudokuValidator
   #   9 . . . | . . . | . . .        8 . . . | . . . | . . .
   #
   #                                ^
-  #                                grid_row_index
+  #                                grid_index for row
   #
   def subgrid(i)
-    i = i - 1 # convert to 0-based
+    grid[row_starts_for_grid(i), 3].map do |row| 
+      row[column_starts_for_grid(i), 3]
+    end.flatten
+  end
 
-    grid_row_index = i / 3
-    grid_column_index = i % 3
+  def row_starts_for_grid(i)
+    zero_based(i) / 3 * 3
+  end
 
-    row_range = grid_row_index * 3 ... grid_row_index.next * 3
-    column_range = grid_column_index * 3 ... grid_column_index.next * 3
+  def column_starts_for_grid(i)
+    zero_based(i) % 3 * 3
+  end
 
-    subgrid_array = []
-    row_range.each do |ri|
-      column_range.each do |ci|
-        subgrid_array << grid[ri][ci]
-      end
-    end
-    subgrid_array
+  def zero_based(i)
+    i - 1
   end
 
   def validate!
     reset_errors!
-
     [:invalid, :incomplete].each do |error_type|
       [:row, :column, :subgrid].each do |array_type|
-        (1..9).each do |i|
-          if SudokuValidator.array_is? error_type, send(array_type, i)
-            errors[error_type][array_type] << i 
-          end
+        (1..9).each do |i|          
+          errors[error_type][array_type] << i if array_is? error_type, send(array_type, i)
         end
       end
     end

@@ -3,61 +3,54 @@ require 'yaml'
 
 describe SudokuValidator do
 
-  describe '.valid_array?' do
+  def create_validator(file_path=fixture_path('valid_complete.sudoku'))
+    SudokuValidator.new(file_path)
+  end
+
+  describe '#valid_array?' do
     it 'returns false if there are repeats excluding "."' do
-      expect(SudokuValidator.valid_array?(["1", "2", "3"])).to be_true
-      expect(SudokuValidator.valid_array?(["1", "2", "3", "3"])).to be_false
-      expect(SudokuValidator.valid_array?(["1", "2", ".", "."])).to be_true
+      validator = create_validator
+      expect(validator.valid_array?(["1", "2", "3"])).to be_true
+      expect(validator.valid_array?(["1", "2", "3", "3"])).to be_false
+      expect(validator.valid_array?(["1", "2", ".", "."])).to be_true
     end
   end
 
-  describe '.complete_array?' do
+  describe '#complete_array?' do
     it 'returns false if the number elements have count of 9 excluding "."' do
-      expect(SudokuValidator.complete_array?(["1", "2", ".", "."])).to be_false
-      expect(SudokuValidator.complete_array?(["1", "2", "3", "4", "5", "6", "7", "8", "."])).to be_false
-      expect(SudokuValidator.complete_array?(["1", "2", "3", "4", "5", "6", "7", "8", "8"])).to be_true
+      validator = create_validator
+      expect(validator.complete_array?(["1", "2", ".", "."])).to be_false
+      expect(validator.complete_array?(["1", "2", "3", "4", "5", "6", "7", "8", "."])).to be_false
+      expect(validator.complete_array?(["1", "2", "3", "4", "5", "6", "7", "8", "8"])).to be_true
     end
   end
 
-  describe '.array_ok?' do
+  describe '#array_ok?' do
     it 'calls valid_array? if :invalid is given and returns the opposite' do
+      validator = create_validator
       some_array = [1,2,3]
       
-      expect(SudokuValidator).to receive(:valid_array?).with(some_array).once.and_return(false)
-      
-      expect(SudokuValidator.array_is?(:invalid, some_array)).to be_true
-
-      expect(SudokuValidator).to receive(:valid_array?).with(some_array).once.and_return(true)
-
-      expect(SudokuValidator.array_is?(:invalid, some_array)).to be_false
+      expect(validator).to receive(:valid_array?).with(some_array).once.and_return(false)
+      expect(validator.array_is?(:invalid, some_array)).to be_true
+      expect(validator).to receive(:valid_array?).with(some_array).once.and_return(true)
+      expect(validator.array_is?(:invalid, some_array)).to be_false
     end
 
     it 'calls complete_array? if :incomplete is given and returns the opposite' do
+      validator = create_validator
       some_array = [1,2,3]
       
-      expect(SudokuValidator).to receive(:complete_array?).with(some_array).once.and_return(false)
-      
-      expect(SudokuValidator.array_is?(:incomplete, some_array)).to be_true
-
-      expect(SudokuValidator).to receive(:complete_array?).with(some_array).once.and_return(true)
-
-      expect(SudokuValidator.array_is?(:incomplete, some_array)).to be_false
+      expect(validator).to receive(:complete_array?).with(some_array).once.and_return(false)
+      expect(validator.array_is?(:incomplete, some_array)).to be_true
+      expect(validator).to receive(:complete_array?).with(some_array).once.and_return(true)
+      expect(validator.array_is?(:incomplete, some_array)).to be_false
     end
   end
 
   describe '#initialize' do
-    it 'stores the grid' do
+    it 'takes a filepath and stores the grid' do
       reader = SudokuReader.new
       reader.read(fixture_path('valid_incomplete.sudoku'))
-      validator = SudokuValidator.new reader.grid
-
-      expect(validator.grid).to eq reader.grid
-    end
-
-    it 'optionally takes a filepath' do
-      reader = SudokuReader.new
-      reader.read(fixture_path('valid_incomplete.sudoku'))
-
       validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
 
       expect(validator.grid).to eq reader.grid
@@ -103,8 +96,8 @@ describe SudokuValidator do
     #
 
     it 'retrieves a subgrid as an array' do
-      validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
-
+      validator = create_validator('valid_incomplete.sudoku')
+      
       expect(validator.subgrid(3)).to eq ["4", ".", ".", ".", ".", "9", ".", ".", "."]
       expect(validator.subgrid(7)).to eq [".", ".", ".", ".", "1", "7", ".", ".", "."]
     end
@@ -112,7 +105,7 @@ describe SudokuValidator do
 
   describe '#validate!' do
     it 'runs finds and logs all the errors' do
-      validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator = create_validator('invalid_incomplete.sudoku')
       validator.validate!
       expect(validator.errors[:invalid][:row]).to eq []
       expect(validator.errors[:invalid][:column]).to eq [2, 5]
@@ -125,7 +118,7 @@ describe SudokuValidator do
 
   describe '#error_messages' do
     it 'ouputs the correct error messages' do
-      validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator = create_validator('invalid_incomplete.sudoku')
       validator.validate!
 
       expect(validator.error_messages(:invalid)).to eq [
@@ -140,42 +133,40 @@ describe SudokuValidator do
   end
 
   describe '#valid?' do
-    
     it 'validates all 3 array checks' do
-      validator = SudokuValidator.new fixture_path('valid_complete.sudoku')
+      validator = create_validator('valid_complete.sudoku')
       validator.validate!
       expect(validator.valid?).to be_true
 
-      validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
+      validator = create_validator('valid_incomplete.sudoku')
       validator.validate!
       expect(validator.valid?).to be_true
 
-      validator = SudokuValidator.new fixture_path('invalid_complete.sudoku')
+      validator = create_validator('invalid_complete.sudoku')
       validator.validate!
       expect(validator.valid?).to be_false
 
-      validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator = create_validator('invalid_incomplete.sudoku')
       validator.validate!
       expect(validator.valid?).to be_false
     end
   end
 
   describe '#complete?' do
-    
     it 'validates all 3 array checks' do
-      validator = SudokuValidator.new fixture_path('valid_complete.sudoku')
+      validator = create_validator('valid_complete.sudoku')
       validator.validate!
       expect(validator.complete?).to be_true
 
-      validator = SudokuValidator.new fixture_path('valid_incomplete.sudoku')
+      validator = create_validator('valid_incomplete.sudoku')
       validator.validate!
       expect(validator.complete?).to be_false
 
-      validator = SudokuValidator.new fixture_path('invalid_incomplete.sudoku')
+      validator = create_validator('invalid_incomplete.sudoku')
       validator.validate!
       expect(validator.complete?).to be_false
 
-      validator = SudokuValidator.new fixture_path('invalid_complete.sudoku')
+      validator = create_validator('invalid_complete.sudoku')
       validator.validate!
       expect(validator.complete?).to be_true
     end
