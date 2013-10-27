@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require_relative 'lib/sudoku_validator'
+
+validator = SudokuValidator.new(ARGV[0])
+puts "This sudoku is #{!validator.valid? ? "in" : ""}valid#{validator.valid? && !validator.complete? ? ", but incomplete" : ""}."
