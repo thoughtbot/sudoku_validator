@@ -1,3 +1,58 @@
 #!/usr/bin/env ruby
 
-puts "This sudoku is valid."
+filename = ARGV[0]
+
+if File.exist?(filename)
+  file = File.read(filename)
+end
+
+module Sudoku
+  class FileParser
+    def initialize(file)
+
+    end
+
+    def parse_rows
+
+    end
+  end
+end
+
+module Sudoku
+  class Puzzle
+    def initialize(rows)
+
+    end
+
+    def complete?
+      true
+    end
+  end
+end
+
+module Sudoku
+  class Validator
+    def initialize(puzzle)
+
+    end
+
+    def valid?
+      true
+    end
+  end
+end
+
+rows = Sudoku::FileParser.new(file).parse_rows
+puzzle = Sudoku::Puzzle.new(rows)
+validator = Sudoku::Validator.new(puzzle)
+
+case [validator.valid?, puzzle.complete?]
+  when [true, true]
+    puts "This sudoku is valid."
+  when [true, false]
+    puts "This sudoku is valid, but incomplete."
+  when [false, true]
+    puts "This sudoku is invalid."
+  when [false, false]
+    puts "This sudoku is invalid."
+end
