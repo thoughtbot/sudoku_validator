@@ -53,6 +53,6 @@ class SudokuValidator
     end
 
     def any_zeros?(element)
-      element.any? { element.count(0) >= 1 }
+      element.count(0) >= 1
     end
 end
