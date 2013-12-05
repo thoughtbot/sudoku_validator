@@ -5,5 +5,5 @@ Feature: Validating .sudoku files
     Then the output should contain "This sudoku is valid."
 
   Scenario: A valid, incomplete sudoku
-    When I successfully run `sudoku-validator ./valid_incomplete.sudoko`
+    When I successfully run `sudoku-validator ./valid_incomplete.sudoku`
     Then the output should contain "This sudoku is valid, but incomplete."
