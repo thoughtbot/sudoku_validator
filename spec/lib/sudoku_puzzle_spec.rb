@@ -1,20 +1,4 @@
-module Sudoku
-  class Puzzle
-    def initialize(rows = [])
-      raise(ArgumentError, "An array of rows is required to create a puzzle.") if rows.empty?
-      @rows = rows
-    end
-
-    def eql?(other)
-      hash == other.hash
-    end
-    alias_method :==, :eql?
-
-    def hash
-      @rows.hash
-    end
-  end
-end
+require 'sudoku_puzzle'
 
 # "This sudoku is invalid."
 # "- Row 1 contains a duplicate 5 in squares 1 and 3."
@@ -52,18 +36,6 @@ end
 #   }
 # }
 
-# {
-#   :rows => {
-#     "1" => {"5" => [1, 3]}
-#   },
-#   :columns => {
-#     "4" => {"3" => [3, 9]}
-#   },
-#   :boxes => {
-#     "5" => {"9" => [1, 2]}
-#   }
-# }
-
 describe Sudoku::Puzzle do
   it "throws an ArgumentError if not passed an array of rows" do
     expect { Sudoku::Puzzle.new }.to raise_error(ArgumentError)
@@ -76,19 +48,29 @@ describe Sudoku::Puzzle do
     expect(p1).to eq p2
   end
 
+  describe ":rows" do
+    it "returns an array of Row objects" do
+      puzzle = Sudoku::Puzzle.new(input_rows)
+
+      expect(puzzle.rows.count).to eq 9
+      expect(puzzle.rows.first).to eq Sudoku::Row[0, 5, 9, 6, 1, 2, 4, 3, 0]
+      expect(puzzle.rows.last).to eq Sudoku::Row[0, 9, 8, 7, 3, 6, 2, 4, 0]
+    end
+  end
+
   it "responds to :complete?"
 
   def input_rows
     [
-      %w{ 0 5 9 6 1 2 4 3 0 },
-      %w{ 7 0 3 8 5 4 1 0 9 },
-      %w{ 1 6 0 3 7 9 0 2 8 },
-      %w{ 9 8 6 0 4 0 3 5 2 },
-      %w{ 3 7 5 2 0 8 9 1 4 },
-      %w{ 2 4 1 0 9 0 7 8 6 },
-      %w{ 4 3 0 9 8 1 0 7 5 },
-      %w{ 6 0 7 4 2 5 8 0 3 },
-      %w{ 0 9 8 7 3 6 2 4 0 }
+      [0, 5, 9, 6, 1, 2, 4, 3, 0],
+      [7, 0, 3, 8, 5, 4, 1, 0, 9],
+      [1, 6, 0, 3, 7, 9, 0, 2, 8],
+      [9, 8, 6, 0, 4, 0, 3, 5, 2],
+      [3, 7, 5, 2, 0, 8, 9, 1, 4],
+      [2, 4, 1, 0, 9, 0, 7, 8, 6],
+      [4, 3, 0, 9, 8, 1, 0, 7, 5],
+      [6, 0, 7, 4, 2, 5, 8, 0, 3],
+      [0, 9, 8, 7, 3, 6, 2, 4, 0]
     ]
   end
 end
