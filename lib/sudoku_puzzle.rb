@@ -1,16 +1,19 @@
 require_relative 'sudoku_row'
+require_relative 'sudoku_column'
 
 module Sudoku
   class Puzzle
     def initialize(rows = [])
       raise(ArgumentError, "An array of rows is required to create a puzzle.") if rows.empty?
-      @rows = rows
+      @grid = create_grid(rows)
     end
 
     def rows
-      @rows.dup.map do |row|
-        Sudoku::Row[*row]
-      end
+      @grid.row_vectors.map { |row| Sudoku::Row[*row] }
+    end
+
+    def columns
+      @grid.column_vectors.map { |column| Sudoku::Column[*column] }
     end
 
     def eql?(other)
@@ -19,7 +22,13 @@ module Sudoku
     alias_method :==, :eql?
 
     def hash
-      @rows.hash
+      @grid.hash
+    end
+
+    private
+
+    def create_grid(input_rows)
+      Matrix[*input_rows]
     end
   end
 end

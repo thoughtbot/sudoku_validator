@@ -58,6 +58,15 @@ describe Sudoku::Puzzle do
     end
   end
 
+  describe ":columns" do
+    it "returns an array of Column objects" do
+      puzzle = Sudoku::Puzzle.new(input_rows)
+
+      expect(puzzle.columns.count).to eq 9
+      expect(puzzle.columns.first).to eq Sudoku::Column[0, 7, 1, 9, 3, 2, 4, 6, 0]
+    end
+  end
+
   it "responds to :complete?"
 
   def input_rows
