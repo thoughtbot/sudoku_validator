@@ -1,5 +1,5 @@
-require_relative 'sudoku_row'
-require_relative 'sudoku_column'
+require_relative 'sudoku_unit'
+require 'matrix'
 
 module Sudoku
   class Puzzle
@@ -9,21 +9,32 @@ module Sudoku
     end
 
     def rows
-      @grid.row_vectors.map { |row| Sudoku::Row[*row] }
+      @grid.row_vectors.map do |row|
+        Sudoku::Row[*row]
+      end
     end
 
     def columns
-      @grid.column_vectors.map { |column| Sudoku::Column[*column] }
+      @grid.column_vectors.map do |column|
+        Sudoku::Column[*column]
+      end
+    end
+
+    def boxes
+      [0, 3, 6].repeated_permutation(2).map do |x, y|
+        Sudoku::Box[*@grid.minor(x, 3,  y, 3).to_a.flatten]
+      end
     end
 
     def eql?(other)
       hash == other.hash
     end
-    alias_method :==, :eql?
 
     def hash
       @grid.hash
     end
+
+    alias_method :==, :eql?
 
     private
 

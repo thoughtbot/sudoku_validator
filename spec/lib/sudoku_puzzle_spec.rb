@@ -1,41 +1,5 @@
 require 'sudoku_puzzle'
 
-# "This sudoku is invalid."
-# "- Row 1 contains a duplicate 5 in squares 1 and 3."
-# "- Column 4 contains a duplicate 3 in squares 3 and 9."
-# "- Box 5 contains a duplicate 11 in squares 1 and 2."
-
-# [
-#   {
-#     :type => :row,
-#     :number => "5",
-#     :positions => [1, 3]
-#   }
-# ]
-
-# errors = {
-#   :row => [
-#     {
-#       :number => 1,
-#       :value => 5,
-#       :squares => [1, 3]
-#     }
-#   ],
-#
-#   :row => {
-#     1 => [
-#       {
-#         :number  => 5,
-#         :squares => [1, 3]
-#       },
-#       {
-#         :number  => 1,
-#         :squares => [2, 4]
-#       }
-#     ]
-#   }
-# }
-
 describe Sudoku::Puzzle do
   it "throws an ArgumentError if not passed an array of rows" do
     expect { Sudoku::Puzzle.new }.to raise_error(ArgumentError)
@@ -64,6 +28,16 @@ describe Sudoku::Puzzle do
 
       expect(puzzle.columns.count).to eq 9
       expect(puzzle.columns.first).to eq Sudoku::Column[0, 7, 1, 9, 3, 2, 4, 6, 0]
+      expect(puzzle.columns.last).to eq Sudoku::Column[0, 9, 8, 2, 4, 6, 5, 3, 0]
+    end
+  end
+
+  describe ":boxes" do
+    it "returns an array of Box objects" do
+      puzzle = Sudoku::Puzzle.new(input_rows)
+
+      expect(puzzle.boxes.count).to eq 9
+      expect(puzzle.boxes.first).to eq Sudoku::Box[0, 5, 9, 7, 0, 3, 1, 6, 0]
     end
   end
 
