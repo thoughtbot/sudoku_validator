@@ -1,24 +1,13 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/sudoku_fileparser'
+require_relative '../lib/sudoku_puzzle'
 
 filename = ARGV[0]
 
 filepath = File.expand_path(filename)
 if File.exist?(filepath)
   file = File.read(filepath)
-end
-
-module Sudoku
-  class Puzzle
-    def initialize(rows)
-
-    end
-
-    def complete?
-      true
-    end
-  end
 end
 
 module Sudoku
