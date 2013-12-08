@@ -53,10 +53,22 @@ describe Sudoku::Puzzle do
     end
   end
 
+  describe "validity" do
+    specify "a puzzle is invalid if any of its rows, columns or boxes are invalid" do
+      puzzle = Sudoku::Puzzle.new(input_rows)
+      expect(puzzle).not_to be_valid
+    end
+
+    specify "a puzzle is valid if all of its rows, columns and boxes are valid" do
+      puzzle = Sudoku::Puzzle.new(valid_incomplete)
+      expect(puzzle).to be_valid
+    end
+  end
+
   def input_rows
     [
       [0, 5, 9, 6, 1, 2, 4, 3, 0],
-      [7, 0, 3, 8, 5, 4, 1, 0, 9],
+      [7, 0, 3, 8, 5, 1, 1, 0, 9],
       [1, 6, 0, 3, 7, 9, 0, 2, 8],
       [9, 8, 6, 0, 4, 0, 3, 5, 2],
       [3, 7, 5, 2, 0, 8, 9, 1, 4],
@@ -64,6 +76,20 @@ describe Sudoku::Puzzle do
       [4, 3, 0, 9, 8, 1, 0, 7, 5],
       [6, 0, 7, 4, 2, 5, 8, 0, 3],
       [0, 9, 8, 7, 3, 6, 2, 4, 0]
+    ]
+  end
+
+  def valid_incomplete
+    [
+      [8, 5, 0, 0, 0, 2, 4, 0, 0],
+      [7, 2, 0, 0, 0, 0, 0, 0, 9],
+      [0, 0, 4, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 7, 0, 0, 2],
+      [3, 0, 5, 0, 0, 0, 9, 0, 0],
+      [0, 4, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 8, 0, 0, 7, 0],
+      [0, 1, 7, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 3, 6, 0, 4, 0]
     ]
   end
 end

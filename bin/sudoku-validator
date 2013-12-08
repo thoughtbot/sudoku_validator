@@ -10,23 +10,9 @@ if File.exist?(filepath)
   file = File.read(filepath)
 end
 
-module Sudoku
-  class Validator
-    def initialize(puzzle)
+puzzle = Sudoku::Puzzle.new(Sudoku::FileParser.new(file).parse_rows)
 
-    end
-
-    def valid?
-      true
-    end
-  end
-end
-
-rows = Sudoku::FileParser.new(file).parse_rows
-puzzle = Sudoku::Puzzle.new(rows)
-validator = Sudoku::Validator.new(puzzle)
-
-case [validator.valid?, puzzle.complete?]
+case [puzzle.valid?, puzzle.complete?]
   when [true, true]
     puts "This sudoku is valid."
   when [true, false]

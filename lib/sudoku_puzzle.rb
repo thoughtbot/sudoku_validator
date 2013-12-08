@@ -30,6 +30,10 @@ module Sudoku
       rows.any? { |row| row.complete? }
     end
 
+    def valid?
+      all_units.all? { |unit| unit.valid? }
+    end
+
     def eql?(other)
       hash == other.hash
     end
@@ -44,6 +48,12 @@ module Sudoku
 
     def create_grid(input_rows)
       Matrix[*input_rows]
+    end
+
+    def all_units
+      [:rows, :columns, :boxes].map do |message|
+        send(message)
+      end.flatten
     end
   end
 end
