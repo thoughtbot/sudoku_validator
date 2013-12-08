@@ -47,14 +47,16 @@ shared_examples "a Unit" do
   end
 end
 
-describe Sudoku::Row do
-  it_behaves_like "a Unit"
-end
+module Sudoku
+  describe Row do
+    it_behaves_like "a Unit"
+  end
 
-describe Sudoku::Column do
-  it_behaves_like "a Unit"
-end
+  describe Column do
+    it_behaves_like "a Unit"
+  end
 
-describe Sudoku::Box do
-  it_behaves_like "a Unit"
+  describe Box do
+    it_behaves_like "a Unit"
+  end
 end

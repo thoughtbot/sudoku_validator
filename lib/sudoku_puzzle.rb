@@ -10,19 +10,19 @@ module Sudoku
 
     def rows
       @grid.row_vectors.map do |row|
-        Sudoku::Row[*row]
+        Row[*row]
       end
     end
 
     def columns
       @grid.column_vectors.map do |column|
-        Sudoku::Column[*column]
+        Column[*column]
       end
     end
 
     def boxes
       [0, 3, 6].repeated_permutation(2).map do |x, y|
-        Sudoku::Box[*@grid.minor(x, 3,  y, 3).to_a.flatten]
+        Box[*@grid.minor(x, 3,  y, 3).to_a.flatten]
       end
     end
 
