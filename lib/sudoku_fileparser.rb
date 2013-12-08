@@ -16,7 +16,7 @@ module Sudoku
     private
 
     def parse_line(line)
-      parse_empties(line).delete("\n|").split(" ")
+      parse_empties(line).delete("\n|").split(" ").map(&:to_i)
     end
 
     def parse_empties(line)
