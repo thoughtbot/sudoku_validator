@@ -41,7 +41,17 @@ describe Sudoku::Puzzle do
     end
   end
 
-  it "responds to :complete?"
+  describe "completeness" do
+    specify "a puzzle is complete if all of its rows are complete" do
+      puzzle = Sudoku::Puzzle.new([[1, 2, 3], [4, 9, 8], [5, 7, 6]])
+      expect(puzzle).to be_complete
+    end
+
+    specify "a puzzle is incomplete if any of its rows are incomplete" do
+      puzzle = Sudoku::Puzzle.new(input_rows)
+      expect(puzzle).not_to be_complete
+    end
+  end
 
   def input_rows
     [

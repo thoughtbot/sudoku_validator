@@ -26,6 +26,10 @@ module Sudoku
       end
     end
 
+    def complete?
+      rows.any? { |row| row.complete? }
+    end
+
     def eql?(other)
       hash == other.hash
     end
