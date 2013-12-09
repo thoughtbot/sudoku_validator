@@ -1,4 +1,5 @@
 require 'sudoku_validator'
+require 'sudoku_unit'
 
 module Sudoku
   describe Validator do
@@ -30,6 +31,33 @@ module Sudoku
 
     it "responds to :errors" do
       expect(Validator.new(double())).to respond_to(:errors)
+    end
+
+    describe "errors" do
+      context "a valid puzzle" do
+        specify "contains no errors" do
+          puzzle = double(:valid? => true, :complete? => false)
+          allow(puzzle).to receive(:rows).and_return({})
+          expect(Validator.new(puzzle).errors).to be_empty
+        end
+      end
+
+      context "an invalid puzzle" do
+        context "with a row duplicate" do
+          it "contains a detailed error" do
+            puzzle = double(:valid? => false, :complete? => true,
+                            :rows => {
+                              1 => Row[1, 8, 2, 3, 4, 5, 7, 7, 8],
+                              2 => Row[1, 2, 3, 4, 5, 6, 7, 8, 9],
+                              9 => Row[1, 8, 8, 3, 4, 5, 6, 7, 8]
+                            })
+
+            errors = Validator.new(puzzle).errors
+            expect(errors).to include "Row 1 contains a duplicate 8 in squares 2 and 9"
+            expect(errors).to include "Row 9 contains a duplicate 8 in squares 2, 3 and 9"
+          end
+        end
+      end
     end
   end
 end
