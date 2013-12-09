@@ -14,12 +14,12 @@ module Sudoku
     end
 
     describe ":rows" do
-      it "returns an array of Row objects" do
+      it "returns a hash of Row objects indexed" do
         puzzle = Puzzle.new(input_rows)
 
         expect(puzzle.rows.count).to eq 9
-        expect(puzzle.rows.first).to eq Row[0, 5, 9, 6, 1, 2, 4, 3, 0]
-        expect(puzzle.rows.last).to eq Row[0, 9, 8, 7, 3, 6, 2, 4, 0]
+        expect(puzzle.rows[1]).to eq Row[0, 5, 9, 6, 1, 2, 4, 3, 0]
+        expect(puzzle.rows[9]).to eq Row[0, 9, 8, 7, 3, 6, 2, 4, 0]
       end
     end
 
@@ -28,8 +28,8 @@ module Sudoku
         puzzle = Puzzle.new(input_rows)
 
         expect(puzzle.columns.count).to eq 9
-        expect(puzzle.columns.first).to eq Column[0, 7, 1, 9, 3, 2, 4, 6, 0]
-        expect(puzzle.columns.last).to eq Column[0, 9, 8, 2, 4, 6, 5, 3, 0]
+        expect(puzzle.columns[1]).to eq Column[0, 7, 1, 9, 3, 2, 4, 6, 0]
+        expect(puzzle.columns[9]).to eq Column[0, 9, 8, 2, 4, 6, 5, 3, 0]
       end
     end
 
@@ -38,7 +38,7 @@ module Sudoku
         puzzle = Puzzle.new(input_rows)
 
         expect(puzzle.boxes.count).to eq 9
-        expect(puzzle.boxes.first).to eq Box[0, 5, 9, 7, 0, 3, 1, 6, 0]
+        expect(puzzle.boxes[1]).to eq Box[0, 5, 9, 7, 0, 3, 1, 6, 0]
       end
     end
 

@@ -9,25 +9,25 @@ module Sudoku
     end
 
     def rows
-      @grid.row_vectors.map do |row|
-        Row[*row]
-      end
+      Hash[@grid.row_vectors.map.with_index(1) do |row, index|
+        [index, Row[*row]]
+      end]
     end
 
     def columns
-      @grid.column_vectors.map do |column|
-        Column[*column]
-      end
+      Hash[@grid.column_vectors.map.with_index(1) do |column, index|
+        [index, Column[*column]]
+      end]
     end
 
     def boxes
-      [0, 3, 6].repeated_permutation(2).map do |x, y|
-        Box[*@grid.minor(x, 3,  y, 3).to_a.flatten]
-      end
+      Hash[[0, 3, 6].repeated_permutation(2).map.with_index(1) do |(x, y), index|
+        [index, Box[*@grid.minor(x, 3,  y, 3).to_a.flatten]]
+      end]
     end
 
     def complete?
-      rows.any? { |row| row.complete? }
+      rows.any? { |index, row| row.complete? }
     end
 
     def valid?
@@ -52,7 +52,7 @@ module Sudoku
 
     def all_units
       [:rows, :columns, :boxes].map do |message|
-        send(message)
+        send(message).map {|index, unit| unit}
       end.flatten
     end
   end
