@@ -2,6 +2,7 @@
 
 require_relative '../lib/sudoku_fileparser'
 require_relative '../lib/sudoku_puzzle'
+require_relative '../lib/sudoku_validator'
 
 filename = ARGV[0]
 
@@ -11,14 +12,13 @@ if File.exist?(filepath)
 end
 
 puzzle = Sudoku::Puzzle.new(Sudoku::FileParser.new(file).parse_rows)
+validator = Sudoku::Validator.new(puzzle)
 
-case [puzzle.valid?, puzzle.complete?]
-  when [true, true]
-    puts "This sudoku is valid."
-  when [true, false]
-    puts "This sudoku is valid, but incomplete."
-  when [false, true]
-    puts "This sudoku is invalid."
-  when [false, false]
-    puts "This sudoku is invalid."
+puts validator.status
+if validator.errors
+  puts "Errors:"
+  puts ""
+  validator.errors.each.with_index(1) do |error, index|
+    puts "  #{index}) #{error}"
+  end
 end
