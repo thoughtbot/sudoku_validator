@@ -1,6 +1,6 @@
 require 'sudoku_unit'
 
-shared_examples "a Unit" do
+shared_examples "a Unit" do |type|
   context "completeness" do
     specify "a unit is incomplete if it contains empty squares" do
       expect(described_class[0, 5, 9, 6, 1, 2, 4, 3, 8]).not_to be_complete
@@ -45,18 +45,22 @@ shared_examples "a Unit" do
       expect(described_class[7, 5, 9, 6, 1, 2, 4, 3, 8]).to eq described_class[7, 5, 9, 6, 1, 2, 4, 3, 8]
     end
   end
+
+  it "has the right type" do
+    expect(described_class[1, 2, 3, 4, 5, 6, 7, 8, 9].type).to eq type
+  end
 end
 
 module Sudoku
   describe Row do
-    it_behaves_like "a Unit"
+    it_behaves_like "a Unit", "Row"
   end
 
   describe Column do
-    it_behaves_like "a Unit"
+    it_behaves_like "a Unit", "Column"
   end
 
   describe Box do
-    it_behaves_like "a Unit"
+    it_behaves_like "a Unit", "Box"
   end
 end

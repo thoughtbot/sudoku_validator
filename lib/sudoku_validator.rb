@@ -18,26 +18,42 @@ module Sudoku
 
     def errors
       return [] if puzzle.valid?
-      puzzle.rows.map do |row_number, row|
-        x = row.positions.select { |value, position| position.is_a?(Array) }
-        x.empty? ? nil : x.map {|number, squares| DuplicateError.new(row_number, number, squares).to_s }
-      end.compact.flatten
+
+      [:rows, :columns, :boxes].map do |message|
+        puzzle.send(message).map do |index, unit|
+          duplicates(unit).map do |number, positions|
+            DuplicateError.new(unit.type, index, number, positions)
+          end
+        end
+      end.flatten
     end
 
-    class DuplicateError < Struct.new(:row_number, :number, :squares)
-      def to_s
-        "#{unit_type} #{row_number} contains a duplicate #{number} in squares #{list(squares)}"
-      end
+    private
 
-      private
-
-      def unit_type
-        "Row"
+    def duplicates(unit)
+      unit.positions.select do |number, position|
+        non_empty?(number) && duplicate?(position)
       end
+    end
 
-      def list(squares)
-        "#{squares.first(squares.count-1).join(', ')} and #{squares.last}"
-      end
+    def non_empty?(number)
+      number != 0
+    end
+
+    def duplicate?(position)
+      position.is_a?(Array)
+    end
+  end
+
+  class DuplicateError < Struct.new(:type, :index, :number, :positions)
+    def to_s
+      "#{type} #{index} contains a duplicate #{number} in squares #{list(positions)}"
+    end
+
+    private
+
+    def list(positions)
+      "#{positions[0...-1].join(', ')} and #{positions.last}"
     end
   end
 end

@@ -17,7 +17,6 @@ validator = Sudoku::Validator.new(puzzle)
 puts validator.status
 if validator.errors
   puts "Errors:"
-  puts ""
   validator.errors.each.with_index(1) do |error, index|
     puts "  #{index}) #{error}"
   end

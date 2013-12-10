@@ -30,9 +30,7 @@ module Sudoku
       square === 0
     end
   end
-end
 
-module Sudoku
   class BaseUnit
     include Unit
 
@@ -55,7 +53,21 @@ module Sudoku
     alias_method :==, :eql?
   end
 
-  class Row    < BaseUnit; end
-  class Column < BaseUnit; end
-  class Box    < BaseUnit; end
+  class Row < BaseUnit
+    def type
+      "Row"
+    end
+  end
+
+  class Column < BaseUnit
+    def type
+      "Column"
+    end
+  end
+
+  class Box < BaseUnit
+    def type
+      "Box"
+    end
+  end
 end
