@@ -2,8 +2,7 @@ module Sudoku
   module Unit
     def positions
       squares.each.with_index(1).inject ({}) do |h, (number, position)|
-        h[number] = h[number] ? [h[number]].flatten << position : position
-        h
+        h.tap { |h| h[number] = h[number] ? [h[number]].flatten << position : position }
       end
     end
 

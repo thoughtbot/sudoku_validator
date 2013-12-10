@@ -24,21 +24,22 @@ module Sudoku
     end
 
     describe ":columns" do
-      it "returns an array of Column objects" do
+      it "returns an array of Column objects indexed" do
         puzzle = Puzzle.new(input_rows)
 
         expect(puzzle.columns.count).to eq 9
-        expect(puzzle.columns[1]).to eq Column[0, 7, 1, 9, 3, 2, 4, 6, 0]
-        expect(puzzle.columns[9]).to eq Column[0, 9, 8, 2, 4, 6, 5, 3, 0]
+        expect(puzzle.columns[2]).to eq Column[5, 0, 6, 8, 7, 4, 3, 0, 9]
+        expect(puzzle.columns[8]).to eq Column[3, 0, 2, 5, 1, 8, 7, 0, 4]
       end
     end
 
     describe ":boxes" do
-      it "returns an array of Box objects" do
+      it "returns an array of Box objects indexed" do
         puzzle = Puzzle.new(input_rows)
 
         expect(puzzle.boxes.count).to eq 9
-        expect(puzzle.boxes[1]).to eq Box[0, 5, 9, 7, 0, 3, 1, 6, 0]
+        expect(puzzle.boxes[3]).to eq Box[4, 3, 0, 1, 0, 9, 0, 2, 8]
+        expect(puzzle.boxes[7]).to eq Box[4, 3, 0, 6, 0, 7, 0, 9, 8]
       end
     end
 

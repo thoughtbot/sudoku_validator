@@ -4,20 +4,21 @@ require_relative '../lib/sudoku_fileparser'
 require_relative '../lib/sudoku_puzzle'
 require_relative '../lib/sudoku_validator'
 
-filename = ARGV[0]
+exit unless filename = ARGV[0]
 
 filepath = File.expand_path(filename)
 if File.exist?(filepath)
-  file = File.read(filepath)
-end
+  parser    = Sudoku::FileParser.new(File.read(filepath))
+  puzzle    = Sudoku::Puzzle.new(parser.parse_rows)
+  validator = Sudoku::Validator.new(puzzle)
 
-puzzle = Sudoku::Puzzle.new(Sudoku::FileParser.new(file).parse_rows)
-validator = Sudoku::Validator.new(puzzle)
-
-puts validator.status
-if validator.errors
-  puts "Errors:"
-  validator.errors.each.with_index(1) do |error, index|
-    puts "  #{index}) #{error}"
+  puts validator.status
+  if validator.errors
+    puts "Errors:"
+    validator.errors.each.with_index(1) do |error, index|
+      puts "  #{index}) #{error}"
+    end
   end
+else
+  puts "Could not find file #{filename}"
 end
