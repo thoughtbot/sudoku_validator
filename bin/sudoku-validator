@@ -13,7 +13,7 @@ if File.exist?(filepath)
   validator = Sudoku::Validator.new(puzzle)
 
   puts validator.status
-  if validator.errors
+  if validator.errors.any?
     puts "Errors:"
     validator.errors.each.with_index(1) do |error, index|
       puts "  #{index}) #{error}"
