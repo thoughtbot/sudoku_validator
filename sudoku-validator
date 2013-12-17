@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+Dir.glob(Dir.pwd + '/lib/*', &method(:require))
+
+sudoku = Sudoku.new(File.open(ARGV[0]))
+
+validator = AssessesSudokuValidity.new(sudoku)
+
+if validator.is_valid?
+  if AssessesSudokuCompleteness.new(sudoku).is_complete?
+    puts "This sudoku is valid."
+  else
+    puts "This sudoku is valid, but incomplete."
+  end
+else
+  puts "This sudoku is invalid."
+
+  puts "Errors :-"
+  validator.errors.each do |set, errors|
+    puts "\n#{set.upcase}" unless errors.empty?
+    errors.each do |index, duplicates|
+      duplicates.each do |duplicate|
+        puts "##{index} contains duplicate #{duplicate}s"
+      end
+    end
+  end
+end
