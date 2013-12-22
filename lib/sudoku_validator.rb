@@ -30,7 +30,7 @@ class SudokuValidator
   end
 
 	def validate_row(row)
-    row.collect{|i| i.to_i}.sort.join == "123456789"
+		row.collect{|i| i.to_i}.sort.join == "123456789"
 	end
 
 	def validate_column(column)
@@ -46,7 +46,7 @@ class SudokuValidator
 			if validate_column(column)
 				next
 			else
-				return false
+			  return false
 			end
 			return true
 		end
