@@ -8,11 +8,10 @@ class SudokuParser
 		sudoku_string = ""
 		counter = 1
     while (line = @file.gets)
+    	next if line.index('-')
     	line = remove_bars(line)
-      sudoku_string += line
+    	@sudoku_array << convert_string_to_array(line).collect{|i| i.to_i}
     end
-    @sudoku_array = convert_string_to_array(sudoku_string)
-    @sudoku_array = @sudoku_array.collect{|i| i.to_i}
     @file.close
 		@sudoku_array
   end
