@@ -3,19 +3,19 @@ require_relative '../lib/sudoku_parser'
 describe SudokuParser do
 	context "#parse" do
 		it "returns the one row sudoku in an array" do
-			parser = SudokuParser.new('one_row.sudoku')
+			parser = SudokuParser.new('examples/one_row.sudoku')
 			result = parser.parse
 		  result.should eq([[8,5, 9, 6, 1, 2, 4, 3, 7 ]])
 		end
 
 		it "returns the two sudoku in an array" do
-			parser = SudokuParser.new('two_row.sudoku')
+			parser = SudokuParser.new('examples/two_row.sudoku')
 			result = parser.parse
-		  result.should eq([[8,5, 9, 6, 1, 2, 4, 3, 7 ],[7 ,2, 3 ,8, 5, 4, 1, 6, 9]])
+		  result.should eq([[8, 5, 9, 6, 1, 2, 4, 3, 7 ],[7 ,2, 3 ,8, 5, 4, 1, 6, 9]])
 		end
 
 		it "returns the three sudoku in an array" do
-			parser = SudokuParser.new('three_row.sudoku')
+			parser = SudokuParser.new('examples/three_row.sudoku')
 			result = parser.parse
 		  result.should eq([[8,5, 9, 6, 1, 2, 4, 3, 7 ],[7 ,2, 3 ,8, 5, 4, 1, 6, 9],[1, 6, 4, 3, 7, 9, 5, 2, 8 ]])
 		end
