@@ -51,9 +51,7 @@ module Sudoku
     end
 
     def all_units
-      [:rows, :columns, :boxes].map do |message|
-        send(message).map { |index, unit| unit }
-      end.flatten
+      rows.values + columns.values + boxes.values
     end
   end
 end
