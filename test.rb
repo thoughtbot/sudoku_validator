@@ -1,22 +1,13 @@
-class SudokuValidator
-	def initialize(sudoku = [])
-		@sudoku = sudoku
-		@rows = get_rows
-		@columns = get_columns
-		@grids = get_grids
-	end
-
-	def get_rows
-		@sudoku
-	end
-
-	def get_columns
-    @sudoku.transpose
-	end
-
-	def get_grids
-		a = @sudoku
-		grids = []
+a = [[8, 5, 9, 6, 1, 2, 4, 3, 7],
+		   								 [7, 2, 3, 8, 5, 4, 1, 6, 9],
+		   								  [1, 6, 4, 3, 7, 9, 5, 2, 8], 
+		   								   [9, 8, 6, 1, 4, 7, 3, 5, 2], 
+		   								  [3, 7, 5, 2, 6, 8, 9, 1, 4], 
+		   								  [2, 4, 1, 5, 9, 3, 7, 8, 6], 
+		   								  [4, 3, 2, 9, 8, 1, 6, 7, 5], 
+		   								  [6, 1, 7, 4, 2, 5, 8, 9, 3],
+		   								   [5, 9, 8, 7, 3, 6, 2, 4, 1]]
+grids = []
 	sub_grid = []
 			
 		(0..2).each do |j|
@@ -94,61 +85,10 @@ class SudokuValidator
 	    end
 	   end
 	   
-grids << sub_grid
-		grids
-	end
-
-  def validate_row(row)
-		row.collect{|i| i.to_i}.sort.join == "123456789"
-	end
-
-	def validate_column(column)
-		column.collect{|i| i.to_i}.sort.join == "123456789"
-  end
-
-  def validate_grid(grid)
-  	grid.collect{|i| i.to_i}.sort.join == "123456789"
-  end
 
 
-	def validate_rows
-		@rows.each do |row|
-			if validate_row(row)
-				next
-			else
-				return false
-			end
-			return true
-		end
-  end
 
-	def validate_columns
-		@columns.each do |column|
-			if validate_column(column)
-				next
-			else
-				return false
-			end
-			return true
-		end
-  end
-
-  def validate_grids
-  		@grids.each do |grid|
-  		if validate_grid(grid)
-				next
-			else
-			  return false
-			end
-			return true
-		end
-  end
-
-	def validate
-		if validate_rows && validate_columns && validate_grids
-			"This sudoku is valid."
-		else
-			"This sudoku is invalid."
-		end
-	end
-end
+   
+	  
+	     grids << sub_grid
+p grids

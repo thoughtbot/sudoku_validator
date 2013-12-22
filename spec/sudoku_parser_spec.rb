@@ -5,7 +5,7 @@ describe SudokuParser do
 		it "returns the one row sudoku in an array" do
 			parser = SudokuParser.new('examples/one_row.sudoku')
 			result = parser.parse
-		  result.should eq([[8,5, 9, 6, 1, 2, 4, 3, 7 ]])
+		  result.should eq([[8, 5, 9, 6, 1, 2, 4, 3, 7 ]])
 		end
 
 		it "returns the two sudoku in an array" do
@@ -48,10 +48,10 @@ describe SudokuParser do
 		  								  [0, 0, 4, 0, 0, 0, 0, 0, 0], 
 		  								  [0, 0, 0, 1, 0, 7, 0, 0, 2], 
 		  								  [3, 0, 5, 0, 0, 0, 9, 0, 0],
-		  								   [0, 4, 0, 0, 0, 0, 0, 0, 0],
-		  								    [0, 0, 0, 0, 8, 0, 0, 7, 0], 
-		  								    [0, 1, 7, 0, 0, 0, 0, 0, 0], 
-		  								    [0, 0, 0, 0, 3, 6, 0, 4, 0]])
+		  								  [0, 4, 0, 0, 0, 0, 0, 0, 0],
+		  								  [0, 0, 0, 0, 8, 0, 0, 7, 0], 
+		  								  [0, 1, 7, 0, 0, 0, 0, 0, 0], 
+		  								  [0, 0, 0, 0, 3, 6, 0, 4, 0]])
 		end
 	end
 end
