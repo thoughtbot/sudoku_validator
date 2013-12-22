@@ -1,7 +1,15 @@
 module Sudoku
-  module Unit
+  class Unit
+    def self.[](*values)
+      new(values)
+    end
+
+    def initialize(values)
+      @squares = values
+    end
+
     def positions
-      squares.each.with_index(1).inject ({}) do |h, (number, position)|
+      @squares.each.with_index(1).inject ({}) do |h, (number, position)|
         h.tap { |h| h[number] = h[number] ? [h[number]].flatten << position : position }
       end
     end
@@ -11,30 +19,7 @@ module Sudoku
     end
 
     def complete?
-      squares.none?(&:zero?)
-    end
-
-    private
-
-    def squares
-      raise("Please set @squares in the object that implements this interface.") unless defined?(@squares)
-      @squares
-    end
-
-    def non_empty_squares
-      squares.reject(&:zero?)
-    end
-  end
-
-  class BaseUnit
-    include Unit
-
-    def self.[](*values)
-      new(values)
-    end
-
-    def initialize(values)
-      @squares = values
+      @squares.none?(&:zero?)
     end
 
     def eql?(other)
@@ -42,25 +27,31 @@ module Sudoku
     end
 
     def hash
-      squares.hash
+      @squares.hash
     end
 
     alias_method :==, :eql?
+
+    private
+
+    def non_empty_squares
+      @squares.reject(&:zero?)
+    end
   end
 
-  class Row < BaseUnit
+  class Row < Unit
     def type
       "Row"
     end
   end
 
-  class Column < BaseUnit
+  class Column < Unit
     def type
       "Column"
     end
   end
 
-  class Box < BaseUnit
+  class Box < Unit
     def type
       "Box"
     end
