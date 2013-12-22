@@ -27,11 +27,11 @@ module Sudoku
     end
 
     def complete?
-      rows.any? { |index, row| row.complete? }
+      rows.all? { |index, row| row.complete? }
     end
 
     def valid?
-      all_units.all? { |unit| unit.valid? }
+      all_units.all?(&:valid?)
     end
 
     def eql?(other)
