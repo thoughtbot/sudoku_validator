@@ -11,7 +11,7 @@ module Sudoku
     end
 
     def complete?
-      squares.none? { |square| empty?(square) }
+      squares.none?(&:zero?)
     end
 
     private
@@ -22,11 +22,7 @@ module Sudoku
     end
 
     def non_empty_squares
-      squares.reject { |square| empty?(square) }
-    end
-
-    def empty?(square)
-      square === 0
+      squares.reject(&:zero?)
     end
   end
 
