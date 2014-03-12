@@ -1,0 +1,24 @@
+# Logfile created on 2014-03-12 08:12:46 -0800 by logger.rb/44203
+I, [2014-03-12T08:12:46.966329 #19887]  INFO -- : 1:  timers (1.1.0) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/timers-1.1.0.gemspec
+I, [2014-03-12T08:12:46.966410 #19884]  INFO -- : 0:  coderay (1.1.0) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/coderay-1.1.0.gemspec
+I, [2014-03-12T08:12:46.966447 #19890]  INFO -- : 2:  nio4r (1.0.0) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/nio4r-1.0.0.gemspec
+I, [2014-03-12T08:12:47.013137 #19887]  INFO -- : 1:  diff-lcs (1.2.5) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/diff-lcs-1.2.5.gemspec
+I, [2014-03-12T08:12:47.013489 #19884]  INFO -- : 0:  ffi (1.9.3) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/ffi-1.9.3.gemspec
+I, [2014-03-12T08:12:47.014508 #19887]  INFO -- : 1:  formatador (0.2.4) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/formatador-0.2.4.gemspec
+I, [2014-03-12T08:12:47.014976 #19890]  INFO -- : 2:  rb-fsevent (0.9.4) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/rb-fsevent-0.9.4.gemspec
+I, [2014-03-12T08:12:47.015318 #19887]  INFO -- : 1:  lumberjack (1.0.4) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/lumberjack-1.0.4.gemspec
+I, [2014-03-12T08:12:47.016023 #19887]  INFO -- : 1:  method_source (0.8.2) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/method_source-0.8.2.gemspec
+I, [2014-03-12T08:12:47.016484 #19890]  INFO -- : 2:  slop (3.4.7) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/slop-3.4.7.gemspec
+I, [2014-03-12T08:12:47.016762 #19887]  INFO -- : 1:  thor (0.18.1) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/thor-0.18.1.gemspec
+I, [2014-03-12T08:12:47.017392 #19884]  INFO -- : 0:  rspec-core (2.14.7) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/rspec-core-2.14.7.gemspec
+I, [2014-03-12T08:12:47.017437 #19887]  INFO -- : 1:  rspec-mocks (2.14.5) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/rspec-mocks-2.14.5.gemspec
+I, [2014-03-12T08:12:47.017829 #19890]  INFO -- : 2:  bundler (1.5.0) from /home/pat/.rvm/gems/ruby-2.1.0@global/specifications/bundler-1.5.0.gemspec
+I, [2014-03-12T08:12:47.018097 #19884]  INFO -- : 0:  rspec-expectations (2.14.5) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/rspec-expectations-2.14.5.gemspec
+I, [2014-03-12T08:12:47.018142 #19887]  INFO -- : 1:  celluloid (0.15.2) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/celluloid-0.15.2.gemspec
+I, [2014-03-12T08:12:47.018695 #19884]  INFO -- : 0:  rb-inotify (0.9.3) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/rb-inotify-0.9.3.gemspec
+I, [2014-03-12T08:12:47.019210 #19887]  INFO -- : 1:  rspec (2.14.1) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/rspec-2.14.1.gemspec
+I, [2014-03-12T08:12:47.019305 #19884]  INFO -- : 0:  celluloid-io (0.15.0) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/celluloid-io-0.15.0.gemspec
+I, [2014-03-12T08:12:47.019482 #19890]  INFO -- : 2:  pry (0.9.12.6) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/pry-0.9.12.6.gemspec
+I, [2014-03-12T08:12:47.019945 #19884]  INFO -- : 0:  listen (2.7.0) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/listen-2.7.0.gemspec
+I, [2014-03-12T08:12:47.020753 #19884]  INFO -- : 0:  guard (2.5.1) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/guard-2.5.1.gemspec
+I, [2014-03-12T08:12:47.021487 #19890]  INFO -- : 2:  guard-rspec (4.2.6) from /home/pat/.rvm/gems/ruby-2.1.0/specifications/guard-rspec-4.2.6.gemspec
