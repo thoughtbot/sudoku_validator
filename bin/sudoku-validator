@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+require_relative '../lib/sudoku_validator'
+require_relative '../lib/grid'
+
+input = File.read(ARGV[0])
+validator = SudokuValidator.new(input)
+
+valid = validator.valid? ? "valid" : "invalid"
+complete = ", but incomplete" if validator.valid? && !validator.complete?
+
+message = "This sudoku is #{valid}#{complete}."
+
+puts message
