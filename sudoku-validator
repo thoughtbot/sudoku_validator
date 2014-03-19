@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require_relative 'lib/sudoku_validator'
+
+app = SudokuValidator.new(ARGV.first)
+
+if app.valid?
+  ending = app.complete? ? '.' : ', but incomplete.'
+  puts "This sudoku is valid#{ending}"
+else
+  puts 'This sudoku is invalid.'
+end
