@@ -18,6 +18,7 @@ class SudokuFileParser
   end
 end
 
+
 class RowValidator
   def initialize(grid)
     @stripped_grid = strip_dots(grid)
@@ -36,6 +37,7 @@ class RowValidator
   end
 end
 
+
 class ColumnValidator
   def initialize(grid)
     @validator = RowValidator.new(grid.transpose)
@@ -45,6 +47,7 @@ class ColumnValidator
     @validator.valid?
   end
 end
+
 
 class SubgridValidator
   def initialize(grid)
@@ -69,5 +72,22 @@ class SubgridValidator
       .each_slice(3)                        # in triples
       .group_by.with_index { |_, i| i % 3 } # group every third
       .map { |i, e| e.flatten }             # form a row from subgrid elements
+  end
+end
+
+
+class SudokuValidator
+  def initialize(filename)
+    @grid = SudokuFileParser.new(filename).grid
+    @complete = !@grid.flatten.any? { |e| e == '.' }
+  end
+
+  def valid?
+    validators = [RowValidator, ColumnValidator, SubgridValidator]
+    validators.all? { |v| v.new(@grid).valid? }
+  end
+
+  def complete?
+    @complete
   end
 end

@@ -102,3 +102,29 @@ class SubgridValidatorTest < MiniTest::Unit::TestCase
   end
 end
 
+class SudokuValidatorTest < MiniTest::Unit::TestCase
+  def test_valid_complete
+    app = SudokuValidator.new('test/valid_complete.sudoku')
+    assert(app.valid?)
+    assert(app.complete?)
+  end
+
+  def test_valid_incomplete
+    app = SudokuValidator.new('test/valid_incomplete.sudoku')
+    assert(app.valid?)
+    refute(app.complete?)
+  end
+
+  def test_invalid_complete
+    app = SudokuValidator.new('test/invalid_complete.sudoku')
+    refute(app.valid?)
+    assert(app.complete?)
+  end
+
+  def test_invalid_incomplete
+    app = SudokuValidator.new('test/invalid_incomplete.sudoku')
+    refute(app.valid?)
+    refute(app.complete?)
+  end
+end
+
