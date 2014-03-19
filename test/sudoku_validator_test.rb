@@ -14,15 +14,15 @@ class SudokuFileParserTest < MiniTest::Unit::TestCase
 
   def test_parses_as_strings
     expected = 
-      [['8', '5', '.', '.', '.', '2', '4', '.', '.'],
-       ['7', '2', '.', '.', '.', '.', '.', '.', '9'],
-       ['.', '.', '4', '.', '.', '.', '.', '.', '.'],
-       ['.', '.', '.', '1', '.', '7', '.', '.', '2'],
-       ['3', '.', '5', '.', '.', '.', '9', '.', '.'],
-       ['.', '4', '.', '.', '.', '.', '.', '.', '.'],
-       ['.', '.', '.', '.', '8', '.', '.', '7', '.'],
-       ['.', '1', '7', '.', '.', '.', '.', '.', '.'],
-       ['.', '.', '.', '.', '3', '6', '.', '4', '.']]
+      [%w{8 5 . . . 2 4 . .},
+       %w{7 2 . . . . . . 9},
+       %w{. . 4 . . . . . .},
+       %w{. . . 1 . 7 . . 2},
+       %w{3 . 5 . . . 9 . .},
+       %w{. 4 . . . . . . .},
+       %w{. . . . 8 . . 7 .},
+       %w{. 1 7 . . . . . .},
+       %w{. . . . 3 6 . 4 .}]
 
     parser = SudokuFileParser.new('test/valid_incomplete.sudoku')
     assert_equal(expected, parser.grid)
@@ -66,3 +66,39 @@ class ColumnValidatorTest < MiniTest::Unit::TestCase
     ColumnValidator.new(grid).valid?
   end
 end
+
+class SubgridValidatorTest < MiniTest::Unit::TestCase
+  def test_is_implemented_in_terms_of_row_validator_for_modified_grid
+    grid = 
+      [%w{8 5 . . . 2 4 . .},
+       %w{7 2 . . . . . . 9},
+       %w{. . 4 . . . . . .},
+       %w{. . . 1 . 7 . . 2},
+       %w{3 . 5 . . . 9 . .},
+       %w{. 4 . . . . . . .},
+       %w{. . . . 8 . . 7 .},
+       %w{. 1 7 . . . . . .},
+       %w{. . . . 3 6 . 4 .}]
+
+    modified_grid = 
+      [%w{8 5 . 7 2 . . . 4},
+       %w{. . 2 . . . . . .},
+       %w{4 . . . . 9 . . .},
+       %w{. . . 3 . 5 . 4 .},
+       %w{1 . 7 . . . . . .},
+       %w{. . 2 9 . . . . .},
+       %w{. . . . 1 7 . . .},
+       %w{. 8 . . . . . 3 6},
+       %w{. 7 . . . . . 4 .}]
+
+    row_validator = mock()
+    row_validator.expects(:valid?).returns(true)
+    RowValidator
+      .expects(:new)
+      .with(modified_grid)
+      .returns(row_validator)
+
+    SubgridValidator.new(grid).valid?
+  end
+end
+
