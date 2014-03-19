@@ -17,3 +17,21 @@ class SudokuFileParser
     stripped.chars.each_slice(9).to_a
   end
 end
+
+class RowValidator
+  def initialize(grid)
+    @stripped_grid = strip_dots(grid)
+  end
+
+  def valid?
+    @stripped_grid.all? { |row| row.uniq.size == row.size }
+  end
+
+  private
+
+  def strip_dots(grid)
+    grid.map do |row|
+      row.reject { |e| e == '.' }
+    end
+  end
+end

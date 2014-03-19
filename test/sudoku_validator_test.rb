@@ -27,3 +27,27 @@ class SudokuFileParserTest < MiniTest::Unit::TestCase
     assert_equal(expected, parser.grid)
   end
 end
+
+class RowValidatorTest < MiniTest::Unit::TestCase
+  def test_valid_when_unique_in_row
+    grid = [['1', '2', '3'], ['3', '2', '1']]
+
+    validator = RowValidator.new(grid)
+
+    assert(validator.valid?)
+  end
+
+  def test_invalid_when_duplicates_in_row
+    grid = [['1', '2', '3'], ['3', '2', '3']]
+
+    validator = RowValidator.new(grid)
+
+    refute(validator.valid?)
+  end
+
+  def test_ignore_dots
+    assert(RowValidator.new([['.', '.'], ['.', '.']]).valid?)
+    assert(RowValidator.new([['.', '.'], ['1', '.']]).valid?)
+    refute(RowValidator.new([['.', '.', '2'], ['1', '.', '1']]).valid?)
+  end
+end
