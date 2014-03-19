@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'mocha/mini_test'
 
 require_relative '../lib/sudoku_validator'
 
@@ -30,7 +31,7 @@ end
 
 class RowValidatorTest < MiniTest::Unit::TestCase
   def test_valid_when_unique_in_row
-    grid = [['1', '2', '3'], ['3', '2', '1']]
+    grid = [%w{1 2 3}, %w{3 2 1}]
 
     validator = RowValidator.new(grid)
 
@@ -38,7 +39,7 @@ class RowValidatorTest < MiniTest::Unit::TestCase
   end
 
   def test_invalid_when_duplicates_in_row
-    grid = [['1', '2', '3'], ['3', '2', '3']]
+    grid = [%w{1 2 3}, %w{3 2 3}]
 
     validator = RowValidator.new(grid)
 
@@ -49,5 +50,19 @@ class RowValidatorTest < MiniTest::Unit::TestCase
     assert(RowValidator.new([['.', '.'], ['.', '.']]).valid?)
     assert(RowValidator.new([['.', '.'], ['1', '.']]).valid?)
     refute(RowValidator.new([['.', '.', '2'], ['1', '.', '1']]).valid?)
+  end
+end
+
+class ColumnValidatorTest < MiniTest::Unit::TestCase
+  def test_is_implemented_in_terms_of_row_validator_for_transposed_grid
+    grid =[%w{1 2 3}, %w{4 5 6}]
+    row_validator = mock()
+    row_validator.expects(:valid?).returns(true)
+    RowValidator
+      .expects(:new)
+      .with([%w{1 4}, %w{2 5}, %w{3 6}])
+      .returns(row_validator)
+
+    ColumnValidator.new(grid).valid?
   end
 end
