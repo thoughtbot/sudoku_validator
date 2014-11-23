@@ -1,27 +1,27 @@
-module Sedoku
+module Sudoku
 
   class Validator
     attr_accessor :errors
 
     def initialize f
-      @matrix = Sedoku::Sfile.new(f).to_matrix
+      @matrix = Sudoku::Sfile.new(f).to_matrix
     end
 
     def validate
       check_rows
       check_columns
-      errors
+      @errors
     end
 
     private
 
     def check_rows
-      errors += @matrix.map {|line| LineValidator.new(line).find_errors}
+      @errors ||= @matrix.map {|line| LineValidator.new(line).find_errors}
     end
 
     def check_columns
-      @columns = Sedoku::Column.new(@matrix).convert
-      errors += @matrix.map {|line| LineValidator.new(line).find_errors}
+      @columns = Sudoku::Column.new(@matrix).convert
+      @errors += @matrix.map {|line| LineValidator.new(line).find_errors}
     end
 
     # def check_quadrants
@@ -92,10 +92,6 @@ module Sedoku
 
       end
     end
-
-
-
-
   end
 
   class Sfile
@@ -105,7 +101,7 @@ module Sedoku
     end
 
     def to_matrix
-      matrix = @file.each_line.collect{|line| SedokuLine.new(line).to_array}
+      matrix = @file.each_line.collect{|line| Sudoku::Line.new(line).to_array}
       return matrix.reject! {|a| a.nil?}
     end
 
@@ -186,10 +182,10 @@ module Sedoku
 
 end
 
-#Sedoku::Array.new(['1','.','.']).validate
-# Sedoku::Validator.new('./text/valid_complete').validate
+#Sudoku::Array.new(['1','.','.']).validate
+# Sudoku::Validator.new('./text/valid_complete').validate
 
-#Sedoku::Validator.new('~/projects/throwaway/sedoku_validator/test/files/valid_complete.sedoku').validate
-
-f_path = (File.expand_path File.dirname(__FILE__)) + '/test/files'
-Sedoku::Validator.new(f_path + '/invlaid_complete.sedoku').validate
+#Sudoku::Validator.new('~/projects/throwaway/Sudoku_validator/test/files/valid_complete.Sudoku').validate
+ #
+ # f_path = (File.expand_path File.dirname(__FILE__)) + '/test/files'
+ # Sudoku::Validator.new(f_path + '/invalid_complete.sudoku').validate
