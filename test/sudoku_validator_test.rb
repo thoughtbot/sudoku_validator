@@ -1,7 +1,7 @@
 require_relative '../sudoku_validator'
 require 'minitest/autorun'
 
-class TestSudokuLine < Minitest::Test
+class TestLine < Minitest::Test
 
   def test_accepts_valid_line
     assert Sudoku::Line.new("5 9 8 |7 3 6 |2 4 1 ").to_array
@@ -17,7 +17,7 @@ class TestSudokuLine < Minitest::Test
 
 end
 
-class TestSudokuArray < Minitest::Test
+class TestLineValidator < Minitest::Test
 
   def test_does_not_count_dots
     assert_equal({}, Sudoku::LineValidator.new(['.','.','.']).find_errors)
@@ -52,7 +52,7 @@ class TestColumnizer < Minitest::Test
   end
 end
 
-class TestRowToQuadrant < Minitest::Test
+class TestQuadrantizer < Minitest::Test
 
 end
 
