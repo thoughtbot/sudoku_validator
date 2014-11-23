@@ -1,10 +1,6 @@
 require_relative '../sudoku_validator'
 require 'minitest/autorun'
 
-class TestSedokuToArray < Minitest::Test
-
-end
-
 class TestSedokuLine < Minitest::Test
 
   def test_accepts_valid_line
@@ -24,15 +20,15 @@ end
 class TestSedokuArray < Minitest::Test
 
   def test_does_not_count_dots
-    assert_equal({}, Sedoku::Array.new(['.','.','.']).find_errors)
+    assert_equal({}, Sedoku::LineValidator.new(['.','.','.']).find_errors)
   end
 
   def test_counts_valid
-    assert_equal({}, Sedoku::Array.new(['5','4','.']).find_errors)
+    assert_equal({}, Sedoku::LineValidator.new(['5','4','.']).find_errors)
   end
 
   def test_returns_multiples
-    assert_equal({"5" => 3, "4" => 2}, Sedoku::Array.new(['5','4','.', '5', '5', '4']).find_errors)
+    assert_equal({"5" => 3, "4" => 2}, Sedoku::LineValidator.new(['5','4','.', '5', '5', '4']).find_errors)
   end
 
 end
@@ -48,5 +44,14 @@ class TestErrorMessage < Minitest::Test
 
 end
 
+class TestColumnToRow < Minitest::Test
+  def test_converts_properly
+    assert_equal [[1,3],[2,4]], Sedoku::Column.new([[1,2],[3,4]]).convert
 
+    assert_equal [[1,4,7],[2,5,8],[3,6,9]], Sedoku::Column.new([[1,2,3],[4,5,6],[7,8,9]]).convert
+  end
+end
 
+class TestRowToQuadrant < Minitest::Test
+
+end
