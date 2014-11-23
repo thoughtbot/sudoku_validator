@@ -37,10 +37,15 @@ class TestSedokuArray < Minitest::Test
 
 end
 
-class TestErrorMessage
+class TestErrorMessage < Minitest::Test
   def test_it_says_type_and_messages
-
+    assert_equal "row 6 had 2 1's", Sedoku::ErrorMessage.say('row', 5, {"1" => 2})
   end
+
+  def test_it_says_type_and_messages_multiple_wrong
+    assert_equal "row 6 had 2 1's and 3 4's", Sedoku::ErrorMessage.say('row', 5, {"1" => 2, "4" => 3})
+  end
+
 end
 
 

@@ -79,6 +79,14 @@ module Sedoku
     end
 
   end
+
+  class ErrorMessage
+
+    def self.say(group_type, group_number, message)
+      messages = message.map {|k,v| "#{v} #{k}'s"}
+      "#{group_type.downcase} #{group_number + 1} had #{messages.join(' and ')}"
+    end
+  end
 end
 
 #Sedoku::Array.new(['1','.','.']).validate
