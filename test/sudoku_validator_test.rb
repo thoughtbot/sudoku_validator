@@ -21,8 +21,27 @@ class TestSedokuLine < Minitest::Test
 
 end
 
+class TestSedokuArray < Minitest::Test
 
+  def test_does_not_count_dots
+    assert_equal({}, Sedoku::Array.new(['.','.','.']).find_errors)
+  end
 
+  def test_counts_valid
+    assert_equal({}, Sedoku::Array.new(['5','4','.']).find_errors)
+  end
+
+  def test_returns_multiples
+    assert_equal({"5" => 3, "4" => 2}, Sedoku::Array.new(['5','4','.', '5', '5', '4']).find_errors)
+  end
+
+end
+
+class TestErrorMessage
+  def test_it_says_type_and_messages
+
+  end
+end
 
 
 
