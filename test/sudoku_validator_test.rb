@@ -55,3 +55,9 @@ end
 class TestRowToQuadrant < Minitest::Test
 
 end
+
+class TestSolutions < Minitest::Test
+  def test_it_reports_bad_column do
+    assert "Invalid: column 9 has 3 7's", Sedoku::Validator('./files/invalid_right_column.sedoku').validate
+  end
+end

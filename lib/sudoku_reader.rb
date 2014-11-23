@@ -24,9 +24,9 @@ module Sedoku
       errors += @matrix.map {|line| LineValidator.new(line).find_errors}
     end
 
-    def check_quadrants
-      @quadrants = Sudoku::Quadrant.new(@matrix).convert
-    end
+    # def check_quadrants
+    #   @quadrants = Sudoku::Quadrant.new(@matrix).convert
+    # end
   end
 
   class Column
@@ -61,7 +61,7 @@ module Sedoku
     end
   end
 
-  class Quadrant < Sudoku::Columns
+  class Quadrant
     attr_accessor :columns
     def initialize matrix
       @matrix = matrix
@@ -188,3 +188,8 @@ end
 
 #Sedoku::Array.new(['1','.','.']).validate
 # Sedoku::Validator.new('./text/valid_complete').validate
+
+#Sedoku::Validator.new('~/projects/throwaway/sedoku_validator/test/files/valid_complete.sedoku').validate
+
+f_path = (File.expand_path File.dirname(__FILE__)) + '/test/files'
+Sedoku::Validator.new(f_path + '/invlaid_complete.sedoku').validate
