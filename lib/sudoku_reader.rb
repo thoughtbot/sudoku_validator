@@ -10,28 +10,36 @@ module Sudoku
     end
 
     def validate
-      check_rows
-      check_columns
       check_quadrants
-      @errors
+      check_columns
+      check_rows
+      format_results
     end
 
     private
 
-    def check_rows
-      validate_section(@matrix, 'Row')
+    def format_results
+      @errors.empty? ? 'Valid' : "Invalid: #{@errors.strip}"
+    end
+
+    def rows
+      @matrix
     end
 
     def columns
       Sudoku::Columnizer.new(@matrix).convert
     end
 
-    def check_columns
-      validate_section(columns, 'Column')
-    end
-
     def quadrant
       Sudoku::Quadrant.new(@matrix).convert
+    end
+
+    def check_rows
+      validate_section(rows, 'Row')
+    end
+
+    def check_columns
+      validate_section(columns, 'Column')
     end
 
     def check_quadrants
@@ -46,6 +54,10 @@ module Sudoku
         end
       end
 
+      puts '--------'
+      puts group_type
+      puts '--------'
+      puts @errors
     end
 
 
