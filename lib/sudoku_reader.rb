@@ -53,11 +53,6 @@ module Sudoku
           @errors += "#{ErrorMessage.say(group_type, index, e)} "
         end
       end
-
-      puts '--------'
-      puts group_type
-      puts '--------'
-      puts @errors
     end
 
 
