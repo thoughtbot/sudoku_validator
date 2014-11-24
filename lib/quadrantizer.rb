@@ -34,20 +34,6 @@ module Sudoku
      row + column
     end
 
-  #   0 1 2
-  # 0 0 1 2
-  # 1 3 4 5
-  # 2 6 7 8
   end
 
 end
-
-#Sudoku::Array.new(['1','.','.']).validate
-# Sudoku::Validator.new('./text/valid_complete').validate
-
-#Sudoku::Validator.new('~/projects/throwaway/Sudoku_validator/test/files/valid_complete.Sudoku').validate
- #
- # f_path = (File.expand_path File.dirname(__FILE__)) + '/test/files'
- # Sudoku::Validator.new(f_path + '/invalid_complete.sudoku').validate
-
- # q = Sudoku::Quadrant.new(s).convert

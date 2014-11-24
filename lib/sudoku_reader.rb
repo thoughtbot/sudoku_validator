@@ -1,3 +1,4 @@
+
 module Sudoku
 
   class Validator
@@ -5,28 +6,45 @@ module Sudoku
 
     def initialize f
       @matrix = Sudoku::Matrixizer.new(f).to_matrix
+      @errors = ''
     end
 
     def validate
-      check_rows
+      # check_rows
       check_columns
+      # check_quadrants
       @errors
     end
 
     private
 
     def check_rows
-      @errors ||= @matrix.map {|line| LineValidator.new(line).find_errors}
+      validate_section(@matrix, 'Row')
+    end
+
+    def columns
+      Sudoku::Columnizer.new(@matrix).convert
     end
 
     def check_columns
-      @columns = Sudoku::Column.new(@matrix).convert
-      @errors += @matrix.map {|line| LineValidator.new(line).find_errors}
+      validate_section(columns, 'Column')
     end
-
+    #
     # def check_quadrants
     #   @quadrants = Sudoku::Quadrant.new(@matrix).convert
+    #   validate_section(@quadrants)
     # end
+
+    def validate_section(lines, group_type  )
+      lines.each_with_index do |line, index|
+        e = MultipleCounter.new(line).find_errors
+        puts e
+        unless e.nil? || e.empty?
+          @errors += "#{ErrorMessage.say(group_type, index, e)} "
+        end
+      end
+
+    end
   end
 
   class ErrorMessage
@@ -38,11 +56,3 @@ module Sudoku
   end
 
 end
-
-#Sudoku::Array.new(['1','.','.']).validate
-# Sudoku::Validator.new('./text/valid_complete').validate
-
-#Sudoku::Validator.new('~/projects/throwaway/Sudoku_validator/test/files/valid_complete.Sudoku').validate
- #
- # f_path = (File.expand_path File.dirname(__FILE__)) + '/test/files'
- # Sudoku::Validator.new(f_path + '/invalid_complete.sudoku').validate

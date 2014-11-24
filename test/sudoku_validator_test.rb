@@ -1,6 +1,8 @@
 require_relative '../sudoku_validator'
 require 'minitest/autorun'
 
+TEST_FILES = File.expand_path File.dirname(__FILE__) + '/files'
+
 class TestLine < Minitest::Test
 
   def test_accepts_valid_line
@@ -17,18 +19,18 @@ class TestLine < Minitest::Test
 
 end
 
-class TestLineValidator < Minitest::Test
+class TestMultipleCounter < Minitest::Test
 
   def test_does_not_count_dots
-    assert_equal({}, Sudoku::LineValidator.new(['.','.','.']).find_errors)
+    assert_equal({}, Sudoku::MultipleCounter.new(['.','.','.']).find_errors)
   end
 
   def test_counts_valid
-    assert_equal({}, Sudoku::LineValidator.new(['5','4','.']).find_errors)
+    assert_equal({}, Sudoku::MultipleCounter.new(['5','4','.']).find_errors)
   end
 
   def test_returns_multiples
-    assert_equal({"5" => 3, "4" => 2}, Sudoku::LineValidator.new(['5','4','.', '5', '5', '4']).find_errors)
+    assert_equal({"5" => 3, "4" => 2}, Sudoku::MultipleCounter.new(['5','4','.', '5', '5', '4']).find_errors)
   end
 
 end
@@ -52,12 +54,14 @@ class TestColumnizer < Minitest::Test
   end
 end
 
-class TestQuadrantizer < Minitest::Test
+class TestIntegration < Minitest::Test
+  def test_invalid_top_row
+    assert_equal "row 1 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_top_row.sudoku').validate
+  end
+
+  def test_invalid_right_column
+    assert_equal "row 9 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_right_column.sudoku').validate
+  end
+
 
 end
-
-# class TestSolutions < Minitest::Test
-#   def test_it_reports_bad_column do
-#     assert_equal "Invalid: column 9 has 3 7's", Sudoku::Validator.new('./files/invalid_right_column.sudoku').validate
-#   end
-# end

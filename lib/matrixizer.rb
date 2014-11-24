@@ -41,6 +41,3 @@ module Sudoku
   end
 
 end
-
-# f = "/home/talos/projects/throwaway/sudoku_validator/test/files/invalid_complete.sudoku"
-# s = Sudoku::Matrixizer.new(f).to_matrix

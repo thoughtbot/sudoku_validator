@@ -1,6 +1,6 @@
 module Sudoku
 
-  class LineValidator
+  class MultipleCounter
     attr_accessor :grouped_array, :counts_hash
 
     def initialize line_array
@@ -40,11 +40,3 @@ module Sudoku
   end
 
 end
-
-#Sudoku::Array.new(['1','.','.']).validate
-# Sudoku::Validator.new('./text/valid_complete').validate
-
-#Sudoku::Validator.new('~/projects/throwaway/Sudoku_validator/test/files/valid_complete.Sudoku').validate
- #
- # f_path = (File.expand_path File.dirname(__FILE__)) + '/test/files'
- # Sudoku::Validator.new(f_path + '/invalid_complete.sudoku').validate
