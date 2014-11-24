@@ -1,67 +1,24 @@
-# Sudoku Validator
-**An excercise for Prime Subscribers. Visit http://learn.thoughtbot.com/prime to
-learn more.**
+Command line utility that validates the proper format of a an arbitrary sized Sedoku.
 
-Dificulty: **Advanced Beginner**
+Sedoku must be a text file in the format of the test/files.  Spaces separate all numbers, new lines separate all rows.
 
-## Your Task
-[Sudoku](http://en.wikipedia.org/wiki/Sudoku) is a logic-based combinatorial number-placement puzzle. The objective is
-to fill a 9×9 grid with digits so that each column, each row, and each of the
-nine 3×3 sub-grids that compose the grid contains all of the digits from 1 to 9.
+The results returns 'Valid' when valid.
 
-Write a command-line program that can read a file containing a sudoku grid and
-validates it. The grid can be partially or completely solved. It either gives a
-success message or a list of errors and
-their positions.
+When doubles are found, it returns the Columns, rows and quadrants that caused the problem.
 
-Sample usage:
+Quadrants are labeled from top left to bottom right, so a 2 by 2 grid would be
+ 1 2
+ 3 4
 
-```
-$ sudoku-validator ./valid_complete.sudoku
-  This sudoku is valid.
+Columns are labeled left to right.
 
-$ sudoku-validator ./valid_incomplete.sudoku
-  This sudoku is valid, but incomplete.
+Rows are labeled top to bottom.
 
-$ sudoku-validator ./invalid_complete.sudoku
-  This sudoku is invalid.
+So
 
-$ sudoku-validator ./invalid_incomplete.sudoku
-  This sudoku is invalid.
-```
+Invalid: Quadrant 5 has 3 3's and Column 9 has 2 2's
 
-A sudoku is valid if:
-* it has no duplicates in a row
-* it has no duplicates in a column
-* it has no duplicates in a sub-grid
+Means the middle 5th quadrant and the 9th column are the reason it is not valid.
 
-## Input files
-The input files look like this
-
-```
-8 5 . |. . 2 |4 . . 
-7 2 . |. . . |. . 9 
-. . 4 |. . . |. . . 
-------+------+------
-. . . |1 . 7 |. . 2 
-3 . 5 |. . . |9 . . 
-. 4 . |. . . |. . . 
-------+------+------
-. . . |. 8 . |. 7 . 
-. 1 7 |. . . |. . . 
-. . . |. 3 6 |. 4 . 
-```
-
-There are four sample sudoku files in this repo that you can use as input/test
-fixtures. They cover the permutations of valid/invalid and complete/incomplete
-
-## Working/Submitting
-1. To work on this exercise, fork the repo and begin implementing your solution.
-2. Your solution must be tested, preferably via TDD.
-3. Create a pull request so your code can be reviewed.
-4. Perform a code review on at least one other person's solution. Your comments
-   should follow our code review guidelines:
-https://github.com/thoughtbot/guides/tree/master/code-review. Most important: be
-friendly. Make suggestions, not demands.
-5. Improve your solution based on the comments you've received and approaches
-   you've learned from reviewing others' attempts.
+To execute run
+  ruby
