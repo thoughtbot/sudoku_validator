@@ -10,9 +10,9 @@ module Sudoku
     end
 
     def validate
-      # check_rows
+      check_rows
       check_columns
-      # check_quadrants
+      check_quadrants
       @errors
     end
 
@@ -29,29 +29,33 @@ module Sudoku
     def check_columns
       validate_section(columns, 'Column')
     end
-    #
-    # def check_quadrants
-    #   @quadrants = Sudoku::Quadrant.new(@matrix).convert
-    #   validate_section(@quadrants)
-    # end
+
+    def quadrant
+      Sudoku::Quadrant.new(@matrix).convert
+    end
+
+    def check_quadrants
+      validate_section(quadrant, 'Quadrant')
+    end
 
     def validate_section(lines, group_type  )
       lines.each_with_index do |line, index|
-        e = MultipleCounter.new(line).find_errors
-        puts e
+        e = Sudoku::MultipleCounter.new(line).find_errors
         unless e.nil? || e.empty?
           @errors += "#{ErrorMessage.say(group_type, index, e)} "
         end
       end
 
     end
+
+
   end
 
   class ErrorMessage
 
     def self.say(group_type, group_number, message)
       messages = message.map {|k,v| "#{v} #{k}'s"}
-      "#{group_type.downcase} #{group_number + 1} had #{messages.join(' and ')}"
+      "#{group_type} #{group_number + 1} had #{messages.join(' and ')}"
     end
   end
 

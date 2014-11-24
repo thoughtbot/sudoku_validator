@@ -56,11 +56,15 @@ end
 
 class TestIntegration < Minitest::Test
   def test_invalid_top_row
-    assert_equal "row 1 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_top_row.sudoku').validate
+    assert_equal "Row 1 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_top_row.sudoku').validate
   end
 
   def test_invalid_right_column
-    assert_equal "row 9 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_right_column.sudoku').validate
+    assert_equal "Column 9 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_right_column.sudoku').validate
+  end
+
+  def test_invalid_middle_quadrant
+    assert_equal "Quadrant 5 had 3 7's", Sudoku::Validator.new(TEST_FILES + '/invalid_middle_quadrant.sudoku').validate
   end
 
 
