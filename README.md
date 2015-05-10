@@ -1,6 +1,5 @@
 # Sudoku Validator
-**An excercise for Prime Subscribers. Visit http://learn.thoughtbot.com/prime to
-learn more.**
+**An excercise for Upcase Subscribers. Visit http://upcase.com to learn more.**
 
 Dificulty: **Advanced Beginner**
 
